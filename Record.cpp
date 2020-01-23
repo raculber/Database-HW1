@@ -17,10 +17,10 @@ void Record::print() {
   cout << "Rank: "  << rank << " Name: " << name << " City: " << city
   << " State: " << state << " Zip: " << zip << " Employees: " << employees << endl;
 }
-void Record::read(fstream &in) {
+void Record::read(ifstream &in) {
   in >> rank >> name >> city >> state >> zip >> employees;
 }
-void Record::write(fstream &out) {
+void Record::write(ofstream &out) {
   out << setw(3) << setw(20) << setw(15) << setw(2) << setw(5) << setw(7) << endl;
 }
 void Record::setRank(int _rank) {

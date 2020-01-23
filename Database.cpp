@@ -17,19 +17,15 @@ void Database::createDatabase() {
   string fileName;
   cout << "Enter the name of a .csv file: ";
   cin >> fileName;
-  config = fileName + ".config" + ".csv";
-  data = fileName + ".data" + ".csv";
-  overflow = fileName + ".overflow" + ".csv";
-    string fileN = fileName + ".csv";
-    ofstream myFile;
-    ifstream fin;
-    myFile.open(config);
-    for(int i = 0; i < 20; i ++)
-        myFile << i << "," << i * i << endl;
-    myFile.close();
-    
-    exit(0);
-
+  config = fileName + ".config";
+  data = fileName + ".data";
+  overflow = fileName + ".overflow";
+  csv = fileName + ".csv";
+  ofstream dout;
+  ifstream din;
+  dout.open(config, ios::out);
+  dout << NUM_RECORDS << ",Rank" << ",Name" << ",City" << ",State" << ",ZIP" << ",Employees" ;
+  dout.close();
 }
 void Database::openDatabase() {
   string dbName;
@@ -73,19 +69,34 @@ void Database::createReport() {
   }
 }
 void Database::addRecord() {
-
+  int rank;
+  int searchRank;
+  string name;
+  string city;
+  string state;
+  int zip;
+  int employees;
+  cout << "Enter the rank of the record you wish to add" << endl;
+  cin >> rank;
+  ifstream din;
+  din.open(csv, ios::in);
+  ofstream dout;
+  dout.open(data, ios::out);
+  if (searchRecord(din, rank, searchRank, name, city, state, zip, employees)) {
+    dout << rank << searchRank << name << city << state << zip << employees;
+  }
+  din.close();
+  dout.close();
 }
 void Database::deleteRecord() {
   int rank;
-  ifstream din;
-  cout << "Enter the rank of the record to delete";
+  cout << "Enter the rank of the record to delete" << endl;
   cin >> rank;
-
 }
 bool Database::searchRecord(ifstream &din, const int location, int &rank,
 string &name, string &city, string &state, int &zip, int &employees) {
-  int low = 0;
-  int high = NUM_RECORDS-1;
+  int low = 1;
+  int high = NUM_RECORDS;
   int middleRank = 0;
   int middle;
   bool found = false;

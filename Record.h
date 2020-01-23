@@ -7,8 +7,8 @@ class Record {
   public:
     Record();
     ~Record();
-    void read(fstream &in);
-    void write(fstream &out);
+    void read(ifstream &in);
+    void write(ofstream &out);
     void setRank(int _rank);
     void setZip(int _zip);
     void setEmployees(int _employees);
