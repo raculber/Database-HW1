@@ -16,24 +16,23 @@ int main() {
     cout << "8) Delete record" << endl;
     cout << "9) Quit" << endl;
     cin >> choice;
-    switch(choice) {
-      case 1:
+    if (choice == 1)
         db.createDatabase();
-      case 2:
+    else if (choice == 2)
         db.openDatabase();
-      case 3:
+    else if (choice == 3)
         db.closeDatabase();
-      case 4:
+    else if (choice == 4)
         db.displayRecord();
-      case 5:
+    else if (choice == 5)
         db.updateRecord();
-      case 6:
+    else if (choice == 6)
         db.createReport();
-      case 7:
+    else if (choice == 7)
         db.addRecord();
-      case 8:
+    else if (choice == 8)
         db.deleteRecord();
-      case 9:
+    else if (choice == 9)
         return 0;
     }
   }
