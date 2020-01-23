@@ -24,8 +24,21 @@ void Database::createDatabase() {
   ofstream dout;
   ifstream din;
   dout.open(config, ios::out);
-  dout << NUM_RECORDS << ",Rank" << ",Name" << ",City" << ",State" << ",ZIP" << ",Employees" ;
+  din.open(csv, ios::in);
+  string firstLine;
+  getline(din,firstLine);
+  dout << NUM_RECORDS << " " << firstLine;
   dout.close();
+  dout.open(data, ios::out);
+  while (!din.eof())
+  {
+    string line;
+    getline(din, line);
+    dout << endl;
+    dout << line;
+  }
+  dout.close();
+  din.close();
 }
 void Database::openDatabase() {
   string dbName;
@@ -81,7 +94,7 @@ void Database::addRecord() {
   ifstream din;
   din.open(csv, ios::in);
   ofstream dout;
-  dout.open(data, ios::out);
+  dout.open(overflow, ios::out);
   if (searchRecord(din, rank, searchRank, name, city, state, zip, employees)) {
     dout << rank << searchRank << name << city << state << zip << employees;
   }
