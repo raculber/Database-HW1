@@ -14,6 +14,7 @@ class Record {
     void setName(string _name);
     void setCity(string _city);
     void setState(string _state);
+    void printData();
     int getRank();
   private:
     int rank, zip, employees;

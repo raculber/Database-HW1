@@ -13,8 +13,8 @@ Record::Record() {
 Record::~Record() {
 
 }
-void Record::print() {
-  cout << "Rank: " + << rank << " Name: " << name << " City: " << city
+void Record::printData() {
+  cout << "Rank: "  << rank << " Name: " << name << " City: " << city
   << " State: " << state << " Zip: " << zip << " Employees: " << employees << endl;
 }
 void Record::read(fstream &in) {
