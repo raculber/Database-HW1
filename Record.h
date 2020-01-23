@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iomanip>
 using namespace std;
+//Template for Record class
 class Record {
   public:
     Record();
