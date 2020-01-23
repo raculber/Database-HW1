@@ -35,5 +35,4 @@ int main() {
     else if (choice == 9)
         return 0;
     }
-  }
 }
