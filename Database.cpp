@@ -21,7 +21,6 @@ void Database::createDatabase() {
   data = fileName + ".data" + ".csv";
   overflow = fileName + ".overflow" + ".csv";
     string fileN = fileName + ".csv";
-    //create new csv file
     ofstream myFile;
     ifstream fin;
     myFile.open(config);
