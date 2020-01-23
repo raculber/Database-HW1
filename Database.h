@@ -15,12 +15,12 @@ class Database {
         void createReport();
         void addRecord();
         void deleteRecord();
-        bool searchRecord(ifstream &din, const string name, int &rank,
-        string &city, string &state, int &zip, int &employees);
+        bool searchRecord(ifstream &din, const string name, int &rank, string &city, string &state, int &zip, int &employees);
         void getRecord(ifstream &din, const int location, int &rank,
         string &name, string &city, string &state, int &zip, int &employees);
       private:
         int numOverflow = 0;
         bool open = false;
         string csv, config, data, overflow;
+        int numRecords = 500;
 };

@@ -3,7 +3,6 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
-const int NUM_RECORDS = 500;
 Database::Database() {
   csv = "";
   config = "";
@@ -27,7 +26,7 @@ void Database::createDatabase() {
   din.open(csv, ios::in);
   string firstLine;
   getline(din,firstLine);
-  dout << NUM_RECORDS << " " << firstLine;
+  dout << numRecords << " " << firstLine;
   dout.close();
   dout.open(data, ios::out);
   while (!din.eof())
@@ -68,7 +67,7 @@ void Database::displayRecord() {
 }
 void Database::updateRecord() {
   string name;
-  cout << "Enter the name of the company record you wish to update " << endl;
+  cout << "Enter the name of the company record you wish to update: " << endl;
   cin >> name;
   string city, state;
   int rank, zip, employees;
@@ -98,19 +97,20 @@ void Database::deleteRecord() {
   cout << "Enter the name of the company record to delete" << endl;
   cin >> name;
 }
-bool Database::searchRecord(ifstream &din, const string ID, int &rank,
+bool Database::searchRecord(ifstream &din, const string name, int &rank,
 string &city, string &state, int &zip, int &employees) {
   int low = 0;
-  int high = NUM_RECORDS-1;
-  string middleID;
+  int high = numRecords;
+  string middleName;
   int middle;
   bool found = false;
   while (!found && (high >= low)) {
     middle = (low + high)/2;
-    getRecord(din, middle+1, rank, middleID, city, state, zip, employees);
-    if (middleID == ID)
+    getRecord(din, middle+1, rank, middleName, city, state, zip, employees);
+    cout << middleName;
+    if (middleName == name)
       found = true;
-    else if (middleID < ID)
+    else if (middleName < name)
       low = middle+1;
     else
       high = middle-1;
@@ -119,9 +119,8 @@ string &city, string &state, int &zip, int &employees) {
 }
 void Database::getRecord(ifstream &din, const int location, int &rank,
 string &name, string &city, string &state, int &zip, int &employees) {
-  Record rec;
-  if (location >= 1 && location <= NUM_RECORDS) {
-    din.seekg(location*NUM_RECORDS, ios::beg);
+  if (location >= 1 && location <= numRecords) {
+    din.seekg(location*numRecords, ios::beg);
     din >> rank >> name >> city >> state >> zip >> employees;
   }
   else
