@@ -17,10 +17,9 @@ void Database::createDatabase() {
   string fileName;
   cout << "Enter the name of a .csv file: ";
   cin >> fileName;
-  config = fileName + ".config" + ".csv";
-  data = fileName + ".data" + ".csv";
-  overflow = fileName + ".overflow" + ".csv";
-    string fileN = fileName + ".csv";
+  config = fileName + ".config";
+  data = fileName + ".data";
+  overflow = fileName + ".overflow";
     ofstream myFile;
     ifstream fin;
     myFile.open(config);
