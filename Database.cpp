@@ -67,11 +67,18 @@ void Database::displayRecord() {
   //Display value (from data)
 }
 void Database::updateRecord() {
-  int recRank;
-  cout << "Enter the rank of the record you want to update: " << endl;
-  cin >> recRank;
+  string name;
+  cout << "Enter the name of the company record you wish to update " << endl;
+  cin >> name;
+  string city, state;
+  int rank, zip, employees;
   //Find record
-
+  ifstream din;
+  din.open(data);
+  if (searchRecord(din, name, rank, city, state, zip, employees))
+  {
+    cout << name << rank << city << state << zip << employees;
+  }
 
 }
 void Database::createReport() {
@@ -82,44 +89,28 @@ void Database::createReport() {
   }
 }
 void Database::addRecord() {
-  int rank;
-  int searchRank;
-  string name;
-  string city;
-  string state;
-  int zip;
-  int employees;
-  cout << "Enter the rank of the record you wish to add" << endl;
-  cin >> rank;
-  ifstream din;
-  din.open(csv, ios::in);
-  ofstream dout;
-  dout.open(overflow, ios::out);
-  if (searchRecord(din, rank, searchRank, name, city, state, zip, employees)) {
-    dout << rank << searchRank << name << city << state << zip << employees;
-  }
-  din.close();
-  dout.close();
+  string addName;
+  cout << "Enter the name of the company record to add" << endl;
+  cin >> addName;
 }
 void Database::deleteRecord() {
-  int rank;
-  cout << "Enter the rank of the record to delete" << endl;
-  cin >> rank;
+  string name;
+  cout << "Enter the name of the company record to delete" << endl;
+  cin >> name;
 }
-bool Database::searchRecord(ifstream &din, const int location, int &rank,
-string &name, string &city, string &state, int &zip, int &employees) {
-  int low = 1;
-  int high = NUM_RECORDS;
-  int middleRank = 0;
+bool Database::searchRecord(ifstream &din, const string ID, int &rank,
+string &city, string &state, int &zip, int &employees) {
+  int low = 0;
+  int high = NUM_RECORDS-1;
+  string middleID;
   int middle;
   bool found = false;
-  Record temp;
   while (!found && (high >= low)) {
     middle = (low + high)/2;
-    getRecord(din, middle+1, middleRank, name, city, state, zip, employees);
-    if (middleRank == location)
+    getRecord(din, middle+1, rank, middleID, city, state, zip, employees);
+    if (middleID == ID)
       found = true;
-    else if (middleRank < location)
+    else if (middleID < ID)
       low = middle+1;
     else
       high = middle-1;
