@@ -29,7 +29,7 @@ void Database::createDatabase() {
   din.open(csv, ios::in);
   string firstLine;
   getline(din,firstLine);
-  dout << numRecords << " " << firstLine;
+  dout << numRecords << "," << numOverflow << firstLine;
   dout.close();
   dout.open(data, ios::out);
   string name, city, state;
@@ -92,7 +92,7 @@ void Database::createReport() {
   }
 }
 void Database::addRecord() {
-  string addName, addCity, addState;
+  /*string addName, addCity, addState;
   int addRank, addZip, addEmployees;
   cout << "Enter the name, rank, city, state, zip, and number of employees " <<
   "of the company record to add: " << endl;
@@ -104,7 +104,62 @@ void Database::addRecord() {
   //Overflow file has more than four records
   if (numOverflow > 4) {
     //Merge overflow file with data file
-  }
+   }
+   */
+    string nameTemp, cityTemp, stateTemp;
+    int rankTemp, zipTemp, empTemp;
+    cout << "Enter the name:  ";
+    cin >> nameTemp;
+    cout << "Enter the rank:  ";
+    cin >> rankTemp;
+    cout << "Enter the city:  ";
+    cin >> cityTemp;
+    cout << "Enter the state:  ";
+    cin >> stateTemp;
+    cout << "Enter the zip code:  ";
+    cin >> zipTemp;
+    cout << "Enter the number of employees:  ";
+    cin >> empTemp;
+    //if numberOverflow < 3
+    //add record to overflow
+    if(numOverflow >= 0 && numOverflow < 4){
+        numOverflow ++;
+        ofstream myFile;
+        myFile.open(overflow, fstream::app);
+        myFile << nameTemp << ", " << rankTemp << ", " << cityTemp << ", " << stateTemp << ", " << zipTemp << ", " << empTemp << endl;
+        myFile.close();
+        myFile.open(config);
+        myFile << numRecords << ", " << numOverflow;
+    }
+    //numberOverflow >= 3
+    //merge the data, change numberOverflow to 0, add record to overflow
+    if(numOverflow >= 4) {
+        //mergeRecord: insertion sort
+        fstream dataFile, overflowFile;
+        dataFile.open(data, fstream::app);
+        overflowFile.open(overflow);
+        string line;
+        while(!overflowFile.eof())
+        {
+            getline(overflowFile, line, ',');
+            dataFile << line;
+        }
+        dataFile.close();
+        overflowFile.close();
+        overflowFile.open(overflow, ofstream::out | ofstream::trunc);
+        overflowFile.close();
+        numRecords += numOverflow;
+        numOverflow = 0;
+        dataFile.open(config);
+        dataFile << numRecords << " " << numOverflow;
+        
+        //sort the data file
+        
+        
+        dataFile.close();
+    }
+    cout << "numOverflow: " << numOverflow << endl;
+    cout << "New record added.\n\n";
 }
 void Database::deleteRecord() {
   string name;
