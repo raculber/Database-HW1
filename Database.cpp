@@ -29,12 +29,13 @@ void Database::createDatabase() {
   dout << numRecords << " " << firstLine;
   dout.close();
   dout.open(data, ios::out);
+  string word;
   while (!din.eof())
   {
     string line;
     getline(din, line);
-    dout << endl;
     dout << line;
+    dout << endl;
   }
   dout.close();
   din.close();
