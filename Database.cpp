@@ -2,8 +2,10 @@
 #include "Database.h"
 #include <iostream>
 #include <fstream>
+#include <stdio.h>
+#include <string.h>
 using namespace std;
-const int NUM_RECORDS = 500;
+const int RECORD_SIZE = 10;
 Database::Database() {
   csv = "";
   config = "";
@@ -27,15 +29,16 @@ void Database::createDatabase() {
   din.open(csv, ios::in);
   string firstLine;
   getline(din,firstLine);
-  dout << NUM_RECORDS << " " << firstLine;
+  dout << numRecords << " " << firstLine;
   dout.close();
   dout.open(data, ios::out);
+  string name, city, state;
+  int rank, zip, employees;
   while (!din.eof())
   {
     string line;
-    getline(din, line);
-    dout << endl;
-    dout << line;
+    getline(din, line, ',');
+    dout << setw(10) << line;
   }
   dout.close();
   din.close();
@@ -68,7 +71,7 @@ void Database::displayRecord() {
 }
 void Database::updateRecord() {
   string name;
-  cout << "Enter the name of the company record you wish to update " << endl;
+  cout << "Enter the name of the company record you wish to update: " << endl;
   cin >> name;
   string city, state;
   int rank, zip, employees;
@@ -77,7 +80,7 @@ void Database::updateRecord() {
   din.open(data);
   if (searchRecord(din, name, rank, city, state, zip, employees))
   {
-    cout << name << rank << city << state << zip << employees;
+    cout << name << rank << city << state << zip << employees << endl;
   }
 
 }
@@ -89,39 +92,49 @@ void Database::createReport() {
   }
 }
 void Database::addRecord() {
-  string addName;
-  cout << "Enter the name of the company record to add" << endl;
-  cin >> addName;
+  string addName, addCity, addState;
+  int addRank, addZip, addEmployees;
+  cout << "Enter the name, rank, city, state, zip, and number of employees " <<
+  "of the company record to add: " << endl;
+  cin >> addName >> addRank >> addCity >> addState >> addZip >> addEmployees;
+  numOverflow++;
+  ofstream dout;
+  dout.open(overflow);
+  dout << setw(10) << addName << addRank << addCity << addState << addZip << addEmployees;
+  //Overflow file has more than four records
+  if (numOverflow > 4) {
+    //Merge overflow file with data file
+  }
 }
 void Database::deleteRecord() {
   string name;
   cout << "Enter the name of the company record to delete" << endl;
   cin >> name;
 }
-bool Database::searchRecord(ifstream &din, const string ID, int &rank,
+bool Database::searchRecord(ifstream &din, const string name, int &rank,
 string &city, string &state, int &zip, int &employees) {
   int low = 0;
-  int high = NUM_RECORDS-1;
-  string middleID;
+  int high = numRecords-1;
+  string middleName;
   int middle;
   bool found = false;
   while (!found && (high >= low)) {
     middle = (low + high)/2;
-    getRecord(din, middle+1, rank, middleID, city, state, zip, employees);
-    if (middleID == ID)
+    getRecord(din, middle+1, rank, middleName, city, state, zip, employees);
+    cout << middleName;
+    if (middleName == name)
       found = true;
-    else if (middleID < ID)
+    else if (middleName < name)
       low = middle+1;
     else
       high = middle-1;
   }
   return found;
 }
-void Database::getRecord(ifstream &din, const int location, int &rank,
+void Database::getRecord(ifstream &din, const int recordNum, int &rank,
 string &name, string &city, string &state, int &zip, int &employees) {
-  Record rec;
-  if (location >= 1 && location <= NUM_RECORDS) {
-    din.seekg(location*NUM_RECORDS, ios::beg);
+  if (recordNum >= 1 && recordNum <= numRecords) {
+    din.seekg(recordNum*RECORD_SIZE, ios::beg);
     din >> rank >> name >> city >> state >> zip >> employees;
   }
   else
