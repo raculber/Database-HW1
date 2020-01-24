@@ -2,7 +2,10 @@
 #include "Database.h"
 #include <iostream>
 #include <fstream>
+#include <stdio.h>
+#include <string.h>
 using namespace std;
+const int RECORD_SIZE = 10;
 Database::Database() {
   csv = "";
   config = "";
@@ -29,13 +32,13 @@ void Database::createDatabase() {
   dout << numRecords << " " << firstLine;
   dout.close();
   dout.open(data, ios::out);
-  string word;
+  string name, city, state;
+  int rank, zip, employees;
   while (!din.eof())
   {
     string line;
-    getline(din, line);
-    dout << line;
-    dout << endl;
+    getline(din, line, ',');
+    dout << setw(10) << line;
   }
   dout.close();
   din.close();
@@ -77,7 +80,7 @@ void Database::updateRecord() {
   din.open(data);
   if (searchRecord(din, name, rank, city, state, zip, employees))
   {
-    cout << name << rank << city << state << zip << employees;
+    cout << name << rank << city << state << zip << employees << endl;
   }
 
 }
@@ -89,9 +92,19 @@ void Database::createReport() {
   }
 }
 void Database::addRecord() {
-  string addName;
-  cout << "Enter the name of the company record to add" << endl;
-  cin >> addName;
+  string addName, addCity, addState;
+  int addRank, addZip, addEmployees;
+  cout << "Enter the name, rank, city, state, zip, and number of employees " <<
+  "of the company record to add: " << endl;
+  cin >> addName >> addRank >> addCity >> addState >> addZip >> addEmployees;
+  numOverflow++;
+  ofstream dout;
+  dout.open(overflow);
+  dout << setw(10) << addName << addRank << addCity << addState << addZip << addEmployees;
+  //Overflow file has more than four records
+  if (numOverflow > 4) {
+    //Merge overflow file with data file
+  }
 }
 void Database::deleteRecord() {
   string name;
@@ -101,7 +114,7 @@ void Database::deleteRecord() {
 bool Database::searchRecord(ifstream &din, const string name, int &rank,
 string &city, string &state, int &zip, int &employees) {
   int low = 0;
-  int high = numRecords;
+  int high = numRecords-1;
   string middleName;
   int middle;
   bool found = false;
@@ -118,10 +131,10 @@ string &city, string &state, int &zip, int &employees) {
   }
   return found;
 }
-void Database::getRecord(ifstream &din, const int location, int &rank,
+void Database::getRecord(ifstream &din, const int recordNum, int &rank,
 string &name, string &city, string &state, int &zip, int &employees) {
-  if (location >= 1 && location <= numRecords) {
-    din.seekg(location*numRecords, ios::beg);
+  if (recordNum >= 1 && recordNum <= numRecords) {
+    din.seekg(recordNum*RECORD_SIZE, ios::beg);
     din >> rank >> name >> city >> state >> zip >> employees;
   }
   else
