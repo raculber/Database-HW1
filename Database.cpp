@@ -89,8 +89,7 @@ void Database::updateRecord() {
   string name;
   cout << "Enter the name of the company record you wish to update: " << endl;
   cin >> name;
-  string city, state;
-  int rank, zip, employees;
+  string city, state, rank, zip, employees;
   //Find record
   ifstream din;
   din.open(data);
@@ -101,10 +100,16 @@ void Database::updateRecord() {
 
 }
 void Database::createReport() {
-  ofstream outfile("report.txt");
-  for (int i = 0; i < 10; i++)
+  ofstream dout;
+  dout.open("report.txt");
+  ifstream din;
+  din.open(data);
+  for (int i = 1; i <= 10; i++)
   {
-
+    string line;
+    getline(din, line);
+    dout << i << ": " << line;
+    dout << endl;
   }
 }
 void Database::addRecord() {
@@ -182,8 +187,8 @@ void Database::deleteRecord() {
   cout << "Enter the name of the company record to delete" << endl;
   cin >> name;
 }
-bool Database::searchRecord(ifstream &din, const string name, int &rank,
-string &city, string &state, int &zip, int &employees) {
+bool Database::searchRecord(ifstream &din, const string name, string &rank,
+string &city, string &state, string &zip, string &employees) {
   int low = 0;
   int high = numRecords-1;
   string middleName;
@@ -202,8 +207,8 @@ string &city, string &state, int &zip, int &employees) {
   }
   return found;
 }
-void Database::getRecord(ifstream &din, const int recordNum, int &rank,
-string &name, string &city, string &state, int &zip, int &employees) {
+void Database::getRecord(ifstream &din, const int recordNum, string &rank,
+string &name, string &city, string &state, string &zip, string &employees) {
   if (recordNum >= 1 && recordNum <= numRecords) {
     din.seekg(recordNum*RECORD_SIZE, ios::beg);
     din >> rank >> name >> city >> state >> zip >> employees;
