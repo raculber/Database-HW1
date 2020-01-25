@@ -93,9 +93,13 @@ void Database::updateRecord() {
   //Find record
   ifstream din;
   din.open(data);
-  if (searchRecord(din, name, rank, city, state, zip, employees))
+  int loc = searchRecord(din, name, rank, city, state, zip, employees);
+  if (loc != -1)
   {
     cout << name << rank << city << state << zip << employees << endl;
+  }
+  else {
+    cout << "Error: company not found" <<  endl;
   }
 
 }
@@ -187,7 +191,7 @@ void Database::deleteRecord() {
   cout << "Enter the name of the company record to delete" << endl;
   cin >> name;
 }
-bool Database::searchRecord(ifstream &din, const string name, string &rank,
+int Database::searchRecord(ifstream &din, const string name, string &rank,
 string &city, string &state, string &zip, string &employees) {
   int low = 0;
   int high = numRecords-1;
@@ -205,11 +209,14 @@ string &city, string &state, string &zip, string &employees) {
     else
       high = middle-1;
   }
-  return found;
+  if (found == true)
+    return middle;
+  else
+    return -1;
 }
 void Database::getRecord(ifstream &din, const int recordNum, string &rank,
 string &name, string &city, string &state, string &zip, string &employees) {
-  if (recordNum >= 1 && recordNum <= numRecords) {
+  if (recordNum >= 1 && recordNum < numRecords) {
     din.seekg(recordNum*RECORD_SIZE, ios::beg);
     din >> rank >> name >> city >> state >> zip >> employees;
   }
