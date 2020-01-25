@@ -2,10 +2,9 @@
 #include "Database.h"
 #include <iostream>
 #include <fstream>
-#include <stdio.h>
-#include <string.h>
+#include <string>
 using namespace std;
-const int RECORD_SIZE = 10;
+const int RECORD_SIZE = 72;
 Database::Database() {
   csv = "";
   config = "";
@@ -34,11 +33,28 @@ void Database::createDatabase() {
   dout.open(data, ios::out);
   string name, city, state;
   int rank, zip, employees;
+  int i = 0;
+  string toks[6];
   while (!din.eof())
   {
-    string line;
-    getline(din, line, ',');
-    dout << setw(10) << line;
+    string substr;
+    getline(din, substr, ',');
+    toks[i] = substr;
+    if (i == 0)
+      dout << setw(35) << toks[i] << " ";
+    else if (i == 1)
+      dout << setw(3) << toks[i] << " ";
+    else if (i == 2)
+      dout << setw(20) << toks[i] << " ";
+    else if (i == 3)
+      dout << setw(2) << toks[i] << " ";
+    else if (i == 4)
+      dout << setw(5) << toks[i] << " ";
+    else
+      dout << setw(7) << toks[i] << " ";
+    i++;
+    if (i > 5)
+      i = 0;
   }
   dout.close();
   din.close();
@@ -152,10 +168,10 @@ void Database::addRecord() {
         numOverflow = 0;
         dataFile.open(config);
         dataFile << numRecords << " " << numOverflow;
-        
+
         //sort the data file
-        
-        
+
+
         dataFile.close();
     }
     cout << "numOverflow: " << numOverflow << endl;
