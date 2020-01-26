@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <iomanip>
 using namespace std;
 const int RECORD_SIZE = 72;
 Database::Database() {
@@ -201,7 +202,6 @@ string &city, string &state, string &zip, string &employees) {
   while (!found && (high >= low)) {
     middle = (low + high)/2;
     getRecord(din, middle+1, rank, middleName, city, state, zip, employees);
-    cout << middleName;
     if (middleName == name)
       found = true;
     else if (middleName < name)
@@ -218,7 +218,7 @@ void Database::getRecord(ifstream &din, const int recordNum, string &rank,
 string &name, string &city, string &state, string &zip, string &employees) {
   if (recordNum >= 1 && recordNum < numRecords) {
     din.seekg(recordNum*RECORD_SIZE, ios::beg);
-    din >> rank >> name >> city >> state >> zip >> employees;
+    din >> name >> rank >> city >> state >> zip >> employees;
   }
   else
     cout << "Out of range" << endl;

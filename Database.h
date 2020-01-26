@@ -1,7 +1,6 @@
 //Template for Database class
 #include <iostream>
 #include <fstream>
-#include "Record.h"
 using namespace std;
 class Database {
     public:
