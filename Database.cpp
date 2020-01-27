@@ -3,7 +3,11 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <string.h>
 #include <iomanip>
+#include <cstring>
+
+
 using namespace std;
 const int RECORD_SIZE = 78;
 Database::Database() {
@@ -11,6 +15,7 @@ Database::Database() {
   config = "";
   data = "";
   overflow = "";
+    numOverflow = 0;
 }
 Database::~Database() {
 
@@ -19,9 +24,9 @@ void Database::createDatabase() {
   string fileName;
   cout << "Enter the name of a .csv file: ";
   cin >> fileName;
-  config = fileName + ".config";
-  data = fileName + ".data";
-  overflow = fileName + ".overflow";
+  config = fileName + ".config.csv";
+  data = fileName + ".data.csv";
+  overflow = fileName + ".overflow.csv";
   csv = fileName + ".csv";
   ofstream dout;
   ifstream din;
@@ -40,6 +45,7 @@ void Database::createDatabase() {
     string substr;
     getline(din, substr, ',');
     toks[i] = substr;
+<<<<<<< HEAD
     if (i == 0) {
       dout << setw(40) << left << toks[i] << " ";
       i++;
@@ -59,15 +65,69 @@ void Database::createDatabase() {
     else if (i == 4) {
       dout << setw(5) << left << toks[i] << " ";
       i++;
+=======
+    cout << toks[i] << "+";
+      //wjegliwej kl change i == 0 as it only ran once, bc there's only one instance where i == 0
+    if (i == 0) {
+      dout << setw(40) << left << toks[i] << ", ";
+    }
+    else if (i == 1) {
+      dout << setw(3) << left << toks[i] << ", ";
+    }
+    else if (i == 2) {
+      dout << setw(20) << left << toks[i] << ", ";
+    }
+    else if (i == 3) {
+      dout << setw(2) << left << toks[i] << ", ";
+    }
+    else if (i == 4) {
+      dout << setw(5) << left << toks[i] << ", ";
+>>>>>>> 7bebb1329696f008236e6941c0f549acf777d2ce
     }
     else {
-      dout << setw(7) << left << toks[i];
-      i = 0;
+      if (!din.eof()) {
+        dout << setw(7) << left << toks[i] << ", ";
+        i = 0;
+      } else {
+        dout << setw(7) << left << toks[i];
+      }
     }
   }
+    dout << endl;
   dout.close();
   din.close();
 }
+
+/*void Database::createDatabase() {
+  string fileName;
+  cout << "Enter the name of a .csv file: ";
+  cin >> fileName;
+  config = fileName + ".config.csv";
+  data = fileName + ".data.csv";
+  overflow = fileName + ".overflow.csv";
+  csv = fileName + ".csv";
+  ofstream dout;
+  ifstream din;
+  dout.open(config, ios::out);
+  din.open(csv, ios::in);
+  string firstLine;
+  getline(din,firstLine);
+  dout << numRecords << ", " << numOverflow << firstLine;
+  dout.close();
+  dout.open(data, ios::out);
+  string substr;
+  while (!din.eof())
+  {
+    substr="";
+    getline(din, substr, ',');
+    cout <<substr << ",";
+    dout << substr<< ",";
+  }
+  dout<<"\n";
+  dout.close();
+  din.close();
+}*/
+
 void Database::openDatabase() {
   string dbName;
   ifstream in;
@@ -125,20 +185,6 @@ void Database::createReport() {
   }
 }
 void Database::addRecord() {
-  /*string addName, addCity, addState;
-  int addRank, addZip, addEmployees;
-  cout << "Enter the name, rank, city, state, zip, and number of employees " <<
-  "of the company record to add: " << endl;
-  cin >> addName >> addRank >> addCity >> addState >> addZip >> addEmployees;
-  numOverflow++;
-  ofstream dout;
-  dout.open(overflow);
-  dout << setw(10) << addName << addRank << addCity << addState << addZip << addEmployees;
-  //Overflow file has more than four records
-  if (numOverflow > 4) {
-    //Merge overflow file with data file
-   }
-   */
     string nameTemp, cityTemp, stateTemp;
     int rankTemp, zipTemp, empTemp;
     cout << "Enter the name:  ";
@@ -167,6 +213,8 @@ void Database::addRecord() {
     //numberOverflow >= 3
     //merge the data, change numberOverflow to 0, add record to overflow
     if(numOverflow >= 4) {
+        numRecords += numOverflow;
+        numOverflow = 0;
         //mergeRecord: insertion sort
         fstream dataFile, overflowFile;
         dataFile.open(data, fstream::app);
@@ -175,14 +223,15 @@ void Database::addRecord() {
         while(!overflowFile.eof())
         {
             getline(overflowFile, line, ',');
-            dataFile << line;
+            if(!overflowFile.eof())
+                dataFile << line << ", ";
+            else
+                dataFile << line;
         }
         dataFile.close();
         overflowFile.close();
         overflowFile.open(overflow, ofstream::out | ofstream::trunc);
         overflowFile.close();
-        numRecords += numOverflow;
-        numOverflow = 0;
         dataFile.open(config);
         dataFile << numRecords << " " << numOverflow;
 
@@ -191,7 +240,7 @@ void Database::addRecord() {
 
         dataFile.close();
     }
-    cout << "numOverflow: " << numOverflow << endl;
+    cout << "NumOverflow:  " << numOverflow << endl;
     cout << "New record added.\n\n";
 }
 void Database::deleteRecord() {
