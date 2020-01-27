@@ -33,14 +33,14 @@ void Database::createDatabase() {
   dout.close();
   dout.open(data, ios::out);
   int i = 0;
-  string toks[7];
+  string toks[6];
   while (!din.eof())
   {
     string substr;
     getline(din, substr, ',');
     toks[i] = substr;
     cout << toks[i] << "+";
-    /*if (i == 0) {
+    if (i == 0) {
       dout << setw(40) << left << toks[i] << " ";
     }
     else if (i == 1) {
@@ -55,15 +55,11 @@ void Database::createDatabase() {
     else if (i == 4) {
       dout << setw(5) << left << toks[i] << " ";
     }
-    else
-      dout << setw(7) << left << toks[i];*/
-    i++;
-    if (i > 5) {
-      dout << left << setw(40) << toks[0] << " " << setw(3) << toks[1] << " " <<
-      setw(20) << toks[2] << " " << setw(2) << toks[3] << " " << setw(5) <<
-      toks[4] << " " << setw(7) << toks[5];
+    else {
+      dout << setw(7) << left << toks[i];
       i = 0;
     }
+    i++;
   }
   dout.close();
   din.close();
