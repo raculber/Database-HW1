@@ -3,13 +3,11 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <string.h>
 #include <iomanip>
 #include <cstring>
 
-
 using namespace std;
-const int RECORD_SIZE = 78;
+const int RECORD_SIZE = 83;
 Database::Database() {
   csv = "";
   config = "";
@@ -24,13 +22,13 @@ void Database::createDatabase() {
   string fileName;
   cout << "Enter the name of a .csv file: ";
   cin >> fileName;
-  config = fileName + ".config.csv";
-  data = fileName + ".data.csv";
-  overflow = fileName + ".overflow.csv";
+  config = fileName + ".config";
+  data = fileName + ".data";
+  overflow = fileName + ".overflow";
   csv = fileName + ".csv";
   ofstream dout;
   ifstream din;
-  dout.open(config, ios::out);
+/*dout.open(config, ios::out);
   din.open(csv, ios::in);
   string firstLine;
   getline(din,firstLine);
@@ -43,45 +41,65 @@ void Database::createDatabase() {
   {
     string substr;
     getline(din, substr, ',');
-    toks[i] = substr;
     if (i == 0) {
-      dout << setw(40) << left << toks[i] << ", ";
+      dout << setw(40) << left << substr << ",";
       i++;
     }
     else if (i == 1) {
-      dout << setw(3) << left << toks[i] << ", ";
+      dout << setw(3) << left << substr << ",";
       i++;
     }
     else if (i == 2) {
-      dout << setw(20) << left << toks[i] << ", ";
+      dout << setw(20) << left << substr << ",";
       i++;
     }
     else if (i == 3) {
-      dout << setw(2) << left << toks[i] << ", ";
+      dout << setw(2) << left << substr << ",";
       i++;
     }
     else if (i == 4) {
       if (!din.eof()) {
-        dout << setw(7) << left << toks[i] << ", ";
-        i = 0;
+        dout << setw(5) << left << substr << ",";
+        //i = 0;
       } else {
-        dout << setw(7) << left << toks[i];
+        dout << setw(5) << left << substr;
       }
       i++;
     }
     else {
       if (!din.eof()) {
-        cout << "5";
-        dout << setw(7) << left << toks[i] << ", ";
+        dout << setw(7) << left << substr << ",";
         i = 0;
       } else {
-        dout << setw(7) << left << toks[i];
+        dout << setw(7) << left << substr;
       }
 
     }
   }
   dout.close();
   din.close();
+  */
+  string name, rank, city, state, zip, employees;
+  string substr;
+  string junk;
+  din.open(csv);
+  dout.open (data);
+  getline(din, junk);
+  while (getline(din, name, ',')) {
+  getline(din, rank, ',');
+  getline(din, city, ',');
+  getline(din, state, ',');
+  getline(din, zip, ',');
+  getline(din, employees, '\n');
+  dout << setw(40) << name << ","
+       << setw(3) << rank << ","
+       << setw(20) << city << ","
+       << setw(2) << state << ","
+       << setw(5) << zip << ","
+       << setw(7) << employees << "\n";
+  }
+  din.close();
+  dout.close();
 }
 
 void Database::openDatabase() {
@@ -246,7 +264,13 @@ void Database::getRecord(ifstream &din, const int recordNum, string &rank,
 string &name, string &city, string &state, string &zip, string &employees) {
   if ((recordNum >= 1) && (recordNum <= numRecords)) {
     din.seekg(recordNum*RECORD_SIZE, ios::beg);
-    din >> name >> rank >> city >> state >> zip >> employees;
+    getline(din, name, ',');
+    getline(din, rank, ',');
+    getline(din, city, ',');
+    getline(din, state, ',');
+    getline(din, zip, ',');
+    getline(din, employees, '\n');
+    //cout << name << rank << city << state << zip << employees;
   }
   else
     cout << "Out of range" << endl;
