@@ -70,24 +70,27 @@ void Database::createDatabase() {
       //wjegliwej kl change i == 0 as it only ran once, bc there's only one instance where i == 0
     if (i == 0) {
       dout << setw(40) << left << toks[i] << ", ";
+        i++;
     }
     else if (i == 1) {
       dout << setw(3) << left << toks[i] << ", ";
+        i++;
     }
     else if (i == 2) {
       dout << setw(20) << left << toks[i] << ", ";
+        i++;
     }
     else if (i == 3) {
       dout << setw(2) << left << toks[i] << ", ";
+        i++;
     }
     else if (i == 4) {
       dout << setw(5) << left << toks[i] << ", ";
->>>>>>> 7bebb1329696f008236e6941c0f549acf777d2ce
+        i++;
     }
     else {
       if (!din.eof()) {
         dout << setw(7) << left << toks[i] << ", ";
-        i = 0;
       } else {
         dout << setw(7) << left << toks[i];
       }
