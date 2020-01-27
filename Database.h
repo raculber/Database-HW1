@@ -21,5 +21,5 @@ class Database {
         bool open = false;
         string csv, config, data, overflow;
         int numRecords = 500;
-        int numOverflow = 0;
+        int numOverflow;
 };
