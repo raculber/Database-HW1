@@ -83,7 +83,9 @@ void Database::displayRecord() {
 void Database::updateRecord() {
   string name;
   cout << "Enter the name of the company record you wish to update: " << endl;
-  cin >> setw(40) >> name;
+  cin.ignore();
+  getline(cin, name);
+  cout << name << endl;
   string city, state, rank, zip, employees;
   //Find record
   ifstream din;
@@ -199,6 +201,7 @@ string &city, string &state, string &zip, string &employees) {
   while (!found && (high >= low)) {
     middle = (low + high)/2;
     getRecord(din, middle+1, rank, middleName, city, state, zip, employees);
+    middleName = middleName.substr(40-name.size(), 40);
     cout << middleName << "," << rank << "," << city << "," << state << "," <<
     zip << "," << employees << endl;
     if (middleName == name)
