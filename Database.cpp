@@ -46,8 +46,12 @@ void Database::createDatabase() {
        << setw(2) << state << ","
        << setw(5) << zip << ","
        << setw(7) << employees << "\n";
+   numRecords++;
   }
   din.close();
+  dout.close();
+  dout.open(config);
+  dout << numRecords << "," << numOverflow;
   dout.close();
 }
 
@@ -79,7 +83,7 @@ void Database::displayRecord() {
 void Database::updateRecord() {
   string name;
   cout << "Enter the name of the company record you wish to update: " << endl;
-  cin >> name;
+  cin >> setw(40) >> name;
   string city, state, rank, zip, employees;
   //Find record
   ifstream din;
@@ -178,9 +182,9 @@ void Database::deleteRecord() {
     ofstream dout;
     dout.open(data, ios::trunc);
     dout.seekp(result*RECORD_SIZE, ios::beg);
-    dout << setw(40) << "-1" << " " << setw(3) << "-1" << " " <<
-    setw(20) << "-1" << " " << setw(2) << "-1" << " " << setw(5) <<
-    "-1" << " " << setw(7) << "-1" << "\n";
+    dout << setw(40) << "-1" << "," << setw(3) << "-1" << "," <<
+    setw(20) << "-1" << "," << setw(2) << "-1" << "," << setw(5) <<
+    "-1" << "," << setw(7) << "-1" << "\n";
   }
   else
     cout << "Error: Record not found" << endl;

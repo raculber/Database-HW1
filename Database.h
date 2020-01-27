@@ -20,6 +20,6 @@ class Database {
       private:
         bool open = false;
         string csv, config, data, overflow;
-        int numRecords = 500;
+        int numRecords = 0;
         int numOverflow;
 };
