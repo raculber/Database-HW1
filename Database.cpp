@@ -5,7 +5,7 @@
 #include <string>
 #include <iomanip>
 using namespace std;
-const int RECORD_SIZE = 72;
+const int RECORD_SIZE = 78;
 Database::Database() {
   csv = "";
   config = "";
@@ -32,30 +32,38 @@ void Database::createDatabase() {
   dout << numRecords << "," << numOverflow << firstLine;
   dout.close();
   dout.open(data, ios::out);
-  string name, city, state;
-  int rank, zip, employees;
   int i = 0;
-  string toks[6];
+  string toks[7];
   while (!din.eof())
   {
     string substr;
     getline(din, substr, ',');
     toks[i] = substr;
-    if (i == 0)
-      dout << setw(35) << toks[i] << " ";
-    else if (i == 1)
-      dout << setw(3) << toks[i] << " ";
-    else if (i == 2)
-      dout << setw(20) << toks[i] << " ";
-    else if (i == 3)
-      dout << setw(2) << toks[i] << " ";
-    else if (i == 4)
-      dout << setw(5) << toks[i] << " ";
+    cout << toks[i] << "+";
+    /*if (i == 0) {
+      dout << setw(40) << left << toks[i] << " ";
+    }
+    else if (i == 1) {
+      dout << setw(3) << left << toks[i] << " ";
+    }
+    else if (i == 2) {
+      dout << setw(20) << left << toks[i] << " ";
+    }
+    else if (i == 3) {
+      dout << setw(2) << left << toks[i] << " ";
+    }
+    else if (i == 4) {
+      dout << setw(5) << left << toks[i] << " ";
+    }
     else
-      dout << setw(7) << toks[i] << " ";
+      dout << setw(7) << left << toks[i];*/
     i++;
-    if (i > 5)
+    if (i > 5) {
+      dout << left << setw(40) << toks[0] << " " << setw(3) << toks[1] << " " <<
+      setw(20) << toks[2] << " " << setw(2) << toks[3] << " " << setw(5) <<
+      toks[4] << " " << setw(7) << toks[5];
       i = 0;
+    }
   }
   dout.close();
   din.close();
@@ -191,6 +199,20 @@ void Database::deleteRecord() {
   string name;
   cout << "Enter the name of the company record to delete" << endl;
   cin >> name;
+  ifstream din;
+  din.open(data);
+  string rank, city, state, zip, employees;
+  int result = searchRecord(din, name, rank, city, state, zip, employees);
+  if (result != -1) {
+    ofstream dout;
+    dout.open(data, ios::trunc);
+    dout.seekp(result*RECORD_SIZE, ios::beg);
+    dout << left << setw(40) << "-1" << " " << setw(3) << "-1" << " " <<
+    setw(20) << "-1" << " " << setw(2) << "-1" << " " << setw(5) <<
+    "-1" << " " << setw(7) << "-1";
+  }
+  else
+    cout << "Error: Record not found" << endl;
 }
 int Database::searchRecord(ifstream &din, const string name, string &rank,
 string &city, string &state, string &zip, string &employees) {
@@ -202,6 +224,8 @@ string &city, string &state, string &zip, string &employees) {
   while (!found && (high >= low)) {
     middle = (low + high)/2;
     getRecord(din, middle+1, rank, middleName, city, state, zip, employees);
+    cout << middleName << " " << rank << " " << city << " " << state << " " <<
+    zip << " " << employees << endl;
     if (middleName == name)
       found = true;
     else if (middleName < name)
@@ -210,13 +234,13 @@ string &city, string &state, string &zip, string &employees) {
       high = middle-1;
   }
   if (found == true)
-    return middle;
+    return middle+1;
   else
     return -1;
 }
 void Database::getRecord(ifstream &din, const int recordNum, string &rank,
 string &name, string &city, string &state, string &zip, string &employees) {
-  if (recordNum >= 1 && recordNum < numRecords) {
+  if ((recordNum >= 1) && (recordNum <= numRecords)) {
     din.seekg(recordNum*RECORD_SIZE, ios::beg);
     din >> name >> rank >> city >> state >> zip >> employees;
   }
