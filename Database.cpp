@@ -7,7 +7,7 @@
 #include <cstring>
 
 using namespace std;
-const int RECORD_SIZE = 83;
+const int RECORD_SIZE = 84;
 Database::Database() {
   csv = "";
   config = "";
@@ -28,57 +28,6 @@ void Database::createDatabase() {
   csv = fileName + ".csv";
   ofstream dout;
   ifstream din;
-/*dout.open(config, ios::out);
-  din.open(csv, ios::in);
-  string firstLine;
-  getline(din,firstLine);
-  dout << numRecords << "," << numOverflow << firstLine;
-  dout.close();
-  dout.open(data, ios::out);
-  int i = 0;
-  string toks[6];
-  while (!din.eof())
-  {
-    string substr;
-    getline(din, substr, ',');
-    if (i == 0) {
-      dout << setw(40) << left << substr << ",";
-      i++;
-    }
-    else if (i == 1) {
-      dout << setw(3) << left << substr << ",";
-      i++;
-    }
-    else if (i == 2) {
-      dout << setw(20) << left << substr << ",";
-      i++;
-    }
-    else if (i == 3) {
-      dout << setw(2) << left << substr << ",";
-      i++;
-    }
-    else if (i == 4) {
-      if (!din.eof()) {
-        dout << setw(5) << left << substr << ",";
-        //i = 0;
-      } else {
-        dout << setw(5) << left << substr;
-      }
-      i++;
-    }
-    else {
-      if (!din.eof()) {
-        dout << setw(7) << left << substr << ",";
-        i = 0;
-      } else {
-        dout << setw(7) << left << substr;
-      }
-
-    }
-  }
-  dout.close();
-  din.close();
-  */
   string name, rank, city, state, zip, employees;
   string substr;
   string junk;
@@ -229,9 +178,9 @@ void Database::deleteRecord() {
     ofstream dout;
     dout.open(data, ios::trunc);
     dout.seekp(result*RECORD_SIZE, ios::beg);
-    dout << left << setw(40) << "-1" << " " << setw(3) << "-1" << " " <<
+    dout << setw(40) << "-1" << " " << setw(3) << "-1" << " " <<
     setw(20) << "-1" << " " << setw(2) << "-1" << " " << setw(5) <<
-    "-1" << " " << setw(7) << "-1";
+    "-1" << " " << setw(7) << "-1" << "\n";
   }
   else
     cout << "Error: Record not found" << endl;
@@ -246,8 +195,8 @@ string &city, string &state, string &zip, string &employees) {
   while (!found && (high >= low)) {
     middle = (low + high)/2;
     getRecord(din, middle+1, rank, middleName, city, state, zip, employees);
-    cout << middleName << " " << rank << " " << city << " " << state << " " <<
-    zip << " " << employees << endl;
+    cout << middleName << "," << rank << "," << city << "," << state << "," <<
+    zip << "," << employees << endl;
     if (middleName == name)
       found = true;
     else if (middleName < name)
@@ -270,7 +219,6 @@ string &name, string &city, string &state, string &zip, string &employees) {
     getline(din, state, ',');
     getline(din, zip, ',');
     getline(din, employees, '\n');
-    //cout << name << rank << city << state << zip << employees;
   }
   else
     cout << "Out of range" << endl;
