@@ -44,24 +44,34 @@ void Database::createDatabase() {
     string substr;
     getline(din, substr, ',');
     toks[i] = substr;
-    cout << toks[i] << "+";
     if (i == 0) {
       dout << setw(40) << left << toks[i] << ", ";
+      i++;
     }
     else if (i == 1) {
       dout << setw(3) << left << toks[i] << ", ";
+      i++;
     }
     else if (i == 2) {
       dout << setw(20) << left << toks[i] << ", ";
+      i++;
     }
     else if (i == 3) {
       dout << setw(2) << left << toks[i] << ", ";
+      i++;
     }
     else if (i == 4) {
-      dout << setw(5) << left << toks[i] << ", ";
+      if (!din.eof()) {
+        dout << setw(7) << left << toks[i] << ", ";
+        i = 0;
+      } else {
+        dout << setw(7) << left << toks[i];
+      }
+      i++;
     }
     else {
       if (!din.eof()) {
+        cout << "5";
         dout << setw(7) << left << toks[i] << ", ";
         i = 0;
       } else {
@@ -69,7 +79,6 @@ void Database::createDatabase() {
       }
 
     }
-    i++;
   }
   dout.close();
   din.close();
