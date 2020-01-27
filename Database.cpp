@@ -45,7 +45,6 @@ void Database::createDatabase() {
     string substr;
     getline(din, substr, ',');
     toks[i] = substr;
-<<<<<<< HEAD
     if (i == 0) {
       dout << setw(40) << left << toks[i] << " ";
       i++;
@@ -65,7 +64,6 @@ void Database::createDatabase() {
     else if (i == 4) {
       dout << setw(5) << left << toks[i] << " ";
       i++;
-=======
     cout << toks[i] << "+";
       //wjegliwej kl change i == 0 as it only ran once, bc there's only one instance where i == 0
     if (i == 0) {
@@ -99,37 +97,8 @@ void Database::createDatabase() {
     dout << endl;
   dout.close();
   din.close();
-}
-
-/*void Database::createDatabase() {
-  string fileName;
-  cout << "Enter the name of a .csv file: ";
-  cin >> fileName;
-  config = fileName + ".config.csv";
-  data = fileName + ".data.csv";
-  overflow = fileName + ".overflow.csv";
-  csv = fileName + ".csv";
-  ofstream dout;
-  ifstream din;
-  dout.open(config, ios::out);
-  din.open(csv, ios::in);
-  string firstLine;
-  getline(din,firstLine);
-  dout << numRecords << ", " << numOverflow << firstLine;
-  dout.close();
-  dout.open(data, ios::out);
-  string substr;
-  while (!din.eof())
-  {
-    substr="";
-    getline(din, substr, ',');
-    cout <<substr << ",";
-    dout << substr<< ",";
   }
-  dout<<"\n";
-  dout.close();
-  din.close();
-}*/
+}
 
 void Database::openDatabase() {
   string dbName;
