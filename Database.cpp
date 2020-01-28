@@ -37,11 +37,24 @@ void Database::createDatabase() {
   dout.open (data);
   getline(din, junk);
   while (getline(din, name, ',')) {
+  //Truncate inputs over max size
+  if (name.size() > 40)
+    name = name.substr(0,40);
   getline(din, rank, ',');
+  if (rank.size() > 3)
+    rank = rank.substr(0,3);
   getline(din, city, ',');
+  if (city.size() > 20)
+    city = city.substr(0,20);
   getline(din, state, ',');
+  if (state.size() > 2)
+    state = state.substr(0,2);
   getline(din, zip, ',');
+  if (zip.size() > 5)
+    zip = zip.substr(0,5);
   getline(din, employees, '\n');
+  if (employees.size() > 7)
+    employees = employees.substr(0,7);
   dout << setw(40) << name << ","
        << setw(3) << rank << ","
        << setw(20) << city << ","
