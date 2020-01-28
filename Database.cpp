@@ -275,6 +275,7 @@ void Database::deleteRecord() {
   string rank, city, state, zip, employees;
   int result = searchRecord(din, name, rank, city, state, zip, employees);
   din.close();
+  ofstream dout;
   if (result != -1) {
     ofstream dout;
     dout.open(data, ios::in);
@@ -285,8 +286,35 @@ void Database::deleteRecord() {
     one << "," << setw(7) << one << "\n";
     dout.close();
   }
-  else
-    cout << "Error: Record not found" << endl;
+  else {
+    bool foundOverflow = false;
+    int loc;
+    din.open(overflow);
+    string tempName, rank, city, state, zip, employees;
+    int i = 0;
+    while(i < numOverflow && !foundOverflow) {
+      getRecord(din, i, rank, tempName, city, state, zip, employees);
+      loc = tempName.find_first_not_of(" ");
+      tempName = tempName.substr(40-loc,40);
+      if (tempName == name) {
+        foundOverflow = true;
+      }
+      i++;
+    }
+    if (!foundOverflow) {
+      cout << "Error: Record not found" << endl;
+    }
+    else {
+      ofstream dout;
+      dout.open(overflow, ios::in);
+      dout.seekp(i*RECORD_SIZE, ios::beg);
+      string one = "-1";
+      dout << setw(40) << name << "," << setw(3) << one << "," <<
+      setw(20) << one << "," << setw(2) << one << "," << setw(5) <<
+      one << "," << setw(7) << one << "\n";
+      dout.close();
+    }
+  }
 }
 int Database::searchRecord(ifstream &din, const string name, string &rank,
 string &city, string &state, string &zip, string &employees) {
