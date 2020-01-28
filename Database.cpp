@@ -134,10 +134,10 @@ void Database::updateRecord() {
     getRecord(din, loc, rank, name, city, state, zip, employees);
     din.seekg(loc*RECORD_SIZE,ios::beg);
     getline(din, line);
-    cout << line;
+    cout << line << endl;
     din.close();
-    int choice = 1;
-    while (choice >= 1 && choice <= 5) {
+    int choice = 0;
+    while (choice < 1 || choice > 5) {
       cout << "Enter the field you wish to update: " << endl;
       cout << "1: Rank" << endl;
       cout << "2: City" << endl;
@@ -148,27 +148,42 @@ void Database::updateRecord() {
     }
     string newVal;
     ofstream dout;
-    dout.open(data, ios::trunc);
+    dout.open(data, ios::in);
     dout.seekp(loc*RECORD_SIZE, ios::beg);
     if (choice == 1) {
       cout << "Enter the new rank value: " << endl;
       cin >> newVal;
+      dout << setw(40) << name << "," << setw(3) << newVal << "," <<
+      setw(20) << city << "," << setw(2) << state << "," << setw(5) <<
+      zip << "," << setw(7) << employees << "\n";
     }
     else if (choice == 2) {
       cout << "Enter the new city value: " << endl;
       cin >> newVal;
+      dout << setw(40) << name << "," << setw(3) << rank << "," <<
+      setw(20) << newVal << "," << setw(2) << state << "," << setw(5) <<
+      zip << "," << setw(7) << employees << "\n";
     }
     else if (choice == 3) {
       cout << "Enter the new state value: " << endl;
       cin >> newVal;
+      dout << setw(40) << name << "," << setw(3) << rank << "," <<
+      setw(20) << city << "," << setw(2) << newVal << "," << setw(5) <<
+      zip << "," << setw(7) << employees << "\n";
     }
     else if (choice == 4) {
       cout << "Enter the new ZIP value: " << endl;
       cin >> newVal;
+      dout << setw(40) << name << "," << setw(3) << rank << "," <<
+      setw(20) << city << "," << setw(2) << state << "," << setw(5) <<
+      newVal << "," << setw(7) << employees << "\n";
     }
     else {
       cout << "Enter the new employees value: " << endl;
       cin >> newVal;
+      dout << setw(40) << name << "," << setw(3) << rank << "," <<
+      setw(20) << city << "," << setw(2) << state << "," << setw(5) <<
+      zip << "," << setw(7) << newVal << "\n";
     }
     dout.close();
   }
