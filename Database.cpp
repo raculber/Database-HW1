@@ -93,6 +93,7 @@ void Database::updateRecord() {
   int loc = searchRecord(din, name, rank, city, state, zip, employees);
   if (loc != -1)
   {
+    getRecord(din, loc, rank, name, city, state, zip, employees);
     cout << name << rank << city << state << zip << employees << endl;
   }
   else {
@@ -197,13 +198,14 @@ string &city, string &state, string &zip, string &employees) {
   int high = numRecords-1;
   string middleName;
   int middle;
+  int loc;
   bool found = false;
-  while (!found && (high >= low)) {
+  while (!found && (low <= high)) {
     middle = (low + high)/2;
-    getRecord(din, middle+1, rank, middleName, city, state, zip, employees);
-    middleName = middleName.substr(40-name.size(), 40);
-    cout << middleName << "," << rank << "," << city << "," << state << "," <<
-    zip << "," << employees << endl;
+    getRecord(din, middle, rank, middleName, city, state, zip, employees);
+    loc = middleName.find_first_not_of(" ");
+    middleName = middleName.substr(loc, 40);
+    cout << middleName << endl;
     if (middleName == name)
       found = true;
     else if (middleName < name)
@@ -212,13 +214,13 @@ string &city, string &state, string &zip, string &employees) {
       high = middle-1;
   }
   if (found == true)
-    return middle+1;
+    return middle;
   else
     return -1;
 }
 void Database::getRecord(ifstream &din, const int recordNum, string &rank,
 string &name, string &city, string &state, string &zip, string &employees) {
-  if ((recordNum >= 1) && (recordNum <= numRecords)) {
+  if ((recordNum >= 0) && (recordNum <= numRecords-1)) {
     din.seekg(recordNum*RECORD_SIZE, ios::beg);
     getline(din, name, ',');
     getline(din, rank, ',');
