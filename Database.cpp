@@ -28,6 +28,8 @@ void Database::createDatabase() {
   csv = fileName + ".csv";
   ofstream dout;
   ifstream din;
+  dout.open(overflow);
+  dout.close();
   string name, rank, city, state, zip, employees;
   string substr;
   string junk;
@@ -51,7 +53,8 @@ void Database::createDatabase() {
   din.close();
   dout.close();
   dout.open(config);
-  dout << numRecords << "," << numOverflow;
+  dout << numRecords << "," << numOverflow << endl;
+  dout << junk;
   dout.close();
 }
 
@@ -63,22 +66,56 @@ void Database::openDatabase() {
   else {
     cout << "Enter the name of the database you want to open." << endl;
     cin >> dbName;
+    csv = dbName + ".csv";
+    config = dbName + ".config";
+    data = dbName + ".data";
+    overflow = dbName + ".overflow";
+    open = true;
   }
 }
 void Database::closeDatabase() {
   open = false;
-  fstream fileC(config);
-  fileC.close();
-  fstream fileD(data);
-  fileD.close();
-  fstream fileO(overflow);
-  fileO.close();
+  csv = "";
+  config = "";
+  data = "";
+  overflow = "";
 }
 void Database::displayRecord() {
+  string name;
+  cout << "Enter the name of the company record you wish to display: " << endl;
+  cin.ignore();
+  getline(cin, name);
+  string city, state, rank, zip, employees;
+  ifstream din;
+  din.open(data);
+  ifstream configIn;
+  configIn.open(config);
   //Find record
-
-  //Display name (from config)
-  //Display value (from data)
+  int loc = searchRecord(din, name, rank, city, state, zip, employees);
+  if (loc != -1) {
+    int start;
+    string junk;
+    string line;
+    getline(configIn, junk);
+    //Display name (from config)
+    getline(configIn, line);
+    cout << right << line << endl;
+    //Display value (from data)
+    //Get rid of excess zeros to make prettier
+    loc = name.find_first_not_of(" ");
+    name = name.substr(loc, 40);
+    loc = rank.find_first_not_of(" ");
+    rank = rank.substr(loc, 3);
+    loc = city.find_first_not_of(" ");
+    city = city.substr(loc, 20);
+    loc = employees.find_first_not_of(" ");
+    employees = employees.substr(loc, 7);
+    cout << name << "," << rank << "," << city << "," <<
+    state << "," << zip << "," << employees << endl;
+  }
+  else {
+    cout << "Error: Company not found" << endl;
+  }
 }
 void Database::updateRecord() {
   string name;
@@ -93,8 +130,47 @@ void Database::updateRecord() {
   int loc = searchRecord(din, name, rank, city, state, zip, employees);
   if (loc != -1)
   {
+    string line;
     getRecord(din, loc, rank, name, city, state, zip, employees);
-    cout << name << rank << city << state << zip << employees << endl;
+    din.seekg(loc*RECORD_SIZE,ios::beg);
+    getline(din, line);
+    cout << line;
+    din.close();
+    int choice = 1;
+    while (choice >= 1 && choice <= 5) {
+      cout << "Enter the field you wish to update: " << endl;
+      cout << "1: Rank" << endl;
+      cout << "2: City" << endl;
+      cout << "3: State" << endl;
+      cout << "4: ZIP" << endl;
+      cout << "5: Employees" << endl;
+      cin >> choice;
+    }
+    string newVal;
+    ofstream dout;
+    dout.open(data, ios::trunc);
+    dout.seekp(loc*RECORD_SIZE, ios::beg);
+    if (choice == 1) {
+      cout << "Enter the new rank value: " << endl;
+      cin >> newVal;
+    }
+    else if (choice == 2) {
+      cout << "Enter the new city value: " << endl;
+      cin >> newVal;
+    }
+    else if (choice == 3) {
+      cout << "Enter the new state value: " << endl;
+      cin >> newVal;
+    }
+    else if (choice == 4) {
+      cout << "Enter the new ZIP value: " << endl;
+      cin >> newVal;
+    }
+    else {
+      cout << "Enter the new employees value: " << endl;
+      cin >> newVal;
+    }
+    dout.close();
   }
   else {
     cout << "Error: company not found" <<  endl;
@@ -117,10 +193,12 @@ void Database::createReport() {
 void Database::addRecord() {
     string nameTemp, cityTemp, stateTemp;
     int rankTemp, zipTemp, empTemp;
+    //Change to get line
     cout << "Enter the name:  ";
     cin >> nameTemp;
     cout << "Enter the rank:  ";
     cin >> rankTemp;
+    //Change to get line
     cout << "Enter the city:  ";
     cin >> cityTemp;
     cout << "Enter the state:  ";
@@ -181,13 +259,16 @@ void Database::deleteRecord() {
   din.open(data);
   string rank, city, state, zip, employees;
   int result = searchRecord(din, name, rank, city, state, zip, employees);
+  din.close();
   if (result != -1) {
     ofstream dout;
-    dout.open(data, ios::trunc);
+    dout.open(data, ios::in);
     dout.seekp(result*RECORD_SIZE, ios::beg);
-    dout << setw(40) << "-1" << "," << setw(3) << "-1" << "," <<
-    setw(20) << "-1" << "," << setw(2) << "-1" << "," << setw(5) <<
-    "-1" << "," << setw(7) << "-1" << "\n";
+    string one = "-1";
+    dout << setw(40) << name << "," << setw(3) << one << "," <<
+    setw(20) << one << "," << setw(2) << one << "," << setw(5) <<
+    one << "," << setw(7) << one << "\n";
+    dout.close();
   }
   else
     cout << "Error: Record not found" << endl;
@@ -205,7 +286,6 @@ string &city, string &state, string &zip, string &employees) {
     getRecord(din, middle, rank, middleName, city, state, zip, employees);
     loc = middleName.find_first_not_of(" ");
     middleName = middleName.substr(loc, 40);
-    cout << middleName << endl;
     if (middleName == name)
       found = true;
     else if (middleName < name)
