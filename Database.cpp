@@ -13,7 +13,8 @@ Database::Database() {
   config = "";
   data = "";
   overflow = "";
-    numOverflow = 0;
+  numOverflow = 0;
+  numRecords = 0;
 }
 Database::~Database() {
 
@@ -29,6 +30,11 @@ void Database::createDatabase() {
   ofstream dout;
   ifstream din;
   dout.open(overflow);
+  dout << setw(40) << "3MA" << "," << setw(3) << "94" << ","
+       << setw(20) << "MAPLEWOOD" << "," << setw(2) << "MN"
+       << "," << setw(5) << "55144" << "," << setw(7) << "91584"
+       << "\n";
+  numOverflow++;
   dout.close();
   string name, rank, city, state, zip, employees;
   string substr;
@@ -107,6 +113,7 @@ void Database::displayRecord() {
   configIn.open(config);
   //Find record
   int loc = searchRecord(din, name, rank, city, state, zip, employees);
+  din.close();
   if (loc != -1) {
     int start;
     string junk;
@@ -131,18 +138,19 @@ void Database::displayRecord() {
   else {
     bool foundOverflow = false;
     int loc;
-    din.open(overflow);
     string tempName, rank, city, state, zip, employees;
     int i = 0;
     while(i < numOverflow && !foundOverflow) {
+      din.open(overflow);
       getRecord(din, i, rank, tempName, city, state, zip, employees);
       loc = tempName.find_first_not_of(" ");
-      tempName = tempName.substr(40-loc,40);
+      tempName = tempName.substr(loc,40);
       if (tempName == name) {
         foundOverflow = true;
       }
       i++;
     }
+    din.close();
     if (!foundOverflow) {
       cout << "Error: Record not found" << endl;
     }
@@ -168,6 +176,7 @@ void Database::displayRecord() {
       state << "," << zip << "," << employees << endl;
     }
   }
+  configIn.close();
 }
 void Database::updateRecord() {
   string name;
@@ -255,25 +264,28 @@ void Database::updateRecord() {
   else {
     bool foundOverflow = false;
     int loc;
-    din.open(overflow);
     string tempName, rank, city, state, zip, employees;
     int i = 0;
+    din.close();
+    din.open(overflow);
     while(i < numOverflow && !foundOverflow) {
       getRecord(din, i, rank, tempName, city, state, zip, employees);
       loc = tempName.find_first_not_of(" ");
-      tempName = tempName.substr(40-loc,40);
+      tempName = tempName.substr(loc,40);
       if (tempName == name) {
         foundOverflow = true;
       }
-      i++;
+      else
+        i++;
     }
+    din.close();
     if (!foundOverflow) {
       cout << "Error: Record not found" << endl;
     }
     else {
+      din.open(overflow);
       string line;
-      getRecord(din, loc, rank, name, city, state, zip, employees);
-      din.seekg(loc*RECORD_SIZE,ios::beg);
+      din.seekg(i*RECORD_SIZE,ios::beg);
       getline(din, line);
       cout << line << endl;
       din.close();
@@ -290,7 +302,7 @@ void Database::updateRecord() {
       string newVal;
       ofstream dout;
       dout.open(overflow, ios::in);
-      dout.seekp(loc*RECORD_SIZE, ios::beg);
+      dout.seekp(i*RECORD_SIZE, ios::beg);
       if (choice == 1) {
         cout << "Enter the new rank value: " << endl;
         cin >> newVal;
@@ -302,7 +314,8 @@ void Database::updateRecord() {
       }
       else if (choice == 2) {
         cout << "Enter the new city value: " << endl;
-        cin >> newVal;
+        cin.ignore();
+        getline(cin, newVal);
         if (newVal.size() > 20)
           newVal = newVal.substr(0,20);
         dout << setw(40) << name << "," << setw(3) << rank << "," <<
@@ -446,12 +459,14 @@ void Database::deleteRecord() {
     while(i < numOverflow && !foundOverflow) {
       getRecord(din, i, rank, tempName, city, state, zip, employees);
       loc = tempName.find_first_not_of(" ");
-      tempName = tempName.substr(40-loc,40);
+      tempName = tempName.substr(loc,40);
       if (tempName == name) {
         foundOverflow = true;
       }
-      i++;
+      else
+        i++;
     }
+    din.close();
     if (!foundOverflow) {
       cout << "Error: Record not found" << endl;
     }
@@ -480,6 +495,16 @@ string &city, string &state, string &zip, string &employees) {
     getRecord(din, middle, rank, middleName, city, state, zip, employees);
     loc = middleName.find_first_not_of(" ");
     middleName = middleName.substr(loc, 40);
+    //Check if middleName was deleted
+    /*while (middleName == "-1") {
+      if (middle == high)
+        middle--;
+      else
+        middle++;
+      getRecord(din, middle, rank, middleName, city, state, zip, employees);
+      loc = middleName.find_first_not_of(" ");
+      middleName = middleName.substr(loc, 40);
+    }*/
     if (middleName == name)
       found = true;
     else if (middleName < name)
