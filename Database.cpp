@@ -471,7 +471,7 @@ void Database::deleteRecord() {
       setw(20) << one << "," << setw(2) << one << "," << setw(5) <<
       one << "," << setw(7) << one << "\n";
       dout.close();
-      numDeleted--;
+      numDeleted++;
     }
   }
   else {
@@ -503,9 +503,12 @@ void Database::deleteRecord() {
       setw(20) << one << "," << setw(2) << one << "," << setw(5) <<
       one << "," << setw(7) << one << "\n";
       dout.close();
-      numDeleted--;
+      numDeleted++;
     }
   }
+  dout.open(config);
+  dout << numRecords << "," << numOverflow << "," << numDeleted;
+  dout.close();
 }
 int Database::searchRecord(ifstream &din, const string name, string &rank,
 string &city, string &state, string &zip, string &employees) {
