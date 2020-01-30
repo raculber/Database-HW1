@@ -15,6 +15,8 @@ Database::Database() {
   overflow = "";
   numOverflow = 0;
   numRecords = 0;
+  numDeleted = 0;
+  open = false;
 }
 Database::~Database() {
 
@@ -75,28 +77,28 @@ void Database::createDatabase() {
   dout << numRecords << "," << numOverflow << endl;
   dout << junk;
   dout.close();
+  open = false;
 }
 
 void Database::openDatabase() {
   string dbName;
-  ifstream din;
+  ofstream configIn;
+  ifstream csvIn;
+  ofstream dataIn;
+  ofstream overflowIn;
   if (open == true)
     cout << "Please close the current database before opening." << endl;
   else {
     cout << "Enter the name of the database you want to open." << endl;
     cin >> dbName;
     csv = dbName + ".csv";
-    din.open(csv);
-    din.close();
+    csvIn.open(csv);
     config = dbName + ".config";
-    din.open(config);
-    din.close();
+    configIn.open(config);
     data = dbName + ".data";
-    din.open(data);
-    din.close();
+    dataIn.open(data);
     overflow = dbName + ".overflow";
-    din.open(overflow);
-    din.close();
+    overflowIn.open(overflow);
     open = true;
   }
 }
@@ -469,6 +471,7 @@ void Database::deleteRecord() {
       setw(20) << one << "," << setw(2) << one << "," << setw(5) <<
       one << "," << setw(7) << one << "\n";
       dout.close();
+      numDeleted--;
     }
   }
   else {
@@ -500,6 +503,7 @@ void Database::deleteRecord() {
       setw(20) << one << "," << setw(2) << one << "," << setw(5) <<
       one << "," << setw(7) << one << "\n";
       dout.close();
+      numDeleted--;
     }
   }
 }

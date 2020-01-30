@@ -18,8 +18,9 @@ class Database {
         void getRecord(ifstream &din, const int recordNum, string &rank,
         string &name, string &city, string &state, string &zip, string &employees);
       private:
-        bool open = false;
+        bool open;
         string csv, config, data, overflow;
         int numRecords;
         int numOverflow;
+        int numDeleted;
 };
