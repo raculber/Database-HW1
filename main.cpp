@@ -32,7 +32,11 @@ int main() {
         db.addRecord();
     else if (choice == 8)
         db.deleteRecord();
-    else if (choice == 9)
-        return 0;
+    else if (choice == 9 && db.isOpen()) {
+            cout << "Please close the Database before exiting" << endl;
+            choice = -1;
+    }
+    else if (choice == 9 && !db.isOpen())
+      return 0;
     }
 }

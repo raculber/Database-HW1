@@ -17,6 +17,7 @@ class Database {
         int searchRecord(ifstream &din, const string name, string &rank, string &city, string &state, string &zip, string &employees);
         void getRecord(ifstream &din, const int recordNum, string &rank,
         string &name, string &city, string &state, string &zip, string &employees);
+        bool isOpen();
       private:
         bool open;
         string csv, config, data, overflow;

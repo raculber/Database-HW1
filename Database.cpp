@@ -82,10 +82,10 @@ void Database::createDatabase() {
 
 void Database::openDatabase() {
   string dbName;
-  ofstream configIn;
+  ifstream configIn;
   ifstream csvIn;
-  ofstream dataIn;
-  ofstream overflowIn;
+  ifstream dataIn;
+  ifstream overflowIn;
   if (open == true)
     cout << "Please close the current database before opening." << endl;
   else {
@@ -107,11 +107,21 @@ void Database::openDatabase() {
   }
 }
 void Database::closeDatabase() {
-  open = false;
-  csv = "";
-  config = "";
-  data = "";
-  overflow = "";
+  if (open == true) {
+    open = false;
+    ifstream configIn;
+    ifstream csvIn;
+    ifstream dataIn;
+    ifstream overflowIn;
+    csvIn.close();
+    configIn.close();
+    dataIn.close();
+    overflowIn.close();
+    csv = "";
+    config = "";
+    data = "";
+    overflow = "";
+  }
 }
 void Database::displayRecord() {
   string name;
@@ -552,4 +562,7 @@ string &name, string &city, string &state, string &zip, string &employees) {
   }
   else
     cout << "Out of range" << endl;
+}
+bool Database::isOpen() {
+  return open;
 }
