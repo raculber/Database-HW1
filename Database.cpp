@@ -92,14 +92,18 @@ void Database::openDatabase() {
     cout << "Enter the name of the database you want to open." << endl;
     cin >> dbName;
     csv = dbName + ".csv";
-    csvIn.open(csv);
     config = dbName + ".config";
-    configIn.open(config);
     data = dbName + ".data";
-    dataIn.open(data);
     overflow = dbName + ".overflow";
-    overflowIn.open(overflow);
-    open = true;
+    configIn.open(config, ios::in);
+    dataIn.open(data, ios::in);
+    overflowIn.open(overflow, ios::in);
+    csvIn.open(csv, ios::in);
+    if (configIn.fail() || dataIn.fail() || overflowIn.fail() || csvIn.fail()) {
+      cout << "Error: Files failed to open" << endl;
+    }
+    else
+      open = true;
   }
 }
 void Database::closeDatabase() {
@@ -506,7 +510,7 @@ void Database::deleteRecord() {
       numDeleted++;
     }
   }
-  dout.open(config);
+  dout.open(config );
   dout << numRecords << "," << numOverflow << "," << numDeleted;
   dout.close();
 }
