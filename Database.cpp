@@ -31,13 +31,6 @@ void Database::createDatabase() {
   csv = fileName + ".csv";
   ofstream dout;
   ifstream din;
-  dout.open(overflow);
-  dout << setw(40) << "3MA" << "," << setw(3) << "94" << ","
-       << setw(20) << "MAPLEWOOD" << "," << setw(2) << "MN"
-       << "," << setw(5) << "55144" << "," << setw(7) << "91584"
-       << "\n";
-  numOverflow++;
-  dout.close();
   string name, rank, city, state, zip, employees;
   string substr;
   string junk;
@@ -425,32 +418,45 @@ void Database::createReport() {
   }
 }
 void Database::addRecord() {
-    string nameTemp, cityTemp, stateTemp;
-    int rankTemp, zipTemp, empTemp;
-    //Change to get line
-    cout << "Enter the name:  ";
-    cin >> nameTemp;
-    cout << "Enter the rank:  ";
+    string nameTemp, cityTemp, stateTemp, rankTemp, zipTemp, empTemp;
+    cout << "Enter the name:  " << endl;
+    cin.ignore();
+    getline(cin, nameTemp);
+    if (nameTemp.size() > 40)
+      nameTemp = nameTemp.substr(0,40);
+    cout << "Enter the rank:  " << endl;
     cin >> rankTemp;
-    //Change to get line
-    cout << "Enter the city:  ";
-    cin >> cityTemp;
-    cout << "Enter the state:  ";
+    if (rankTemp.size() > 3)
+      rankTemp.substr(0,3);
+    cout << "Enter the city:  " << endl;
+    cin.ignore();
+    getline(cin, cityTemp);
+    if (cityTemp.size() > 20)
+      cityTemp = cityTemp.substr(0,20);
+    cout << "Enter the state:  " << endl;
     cin >> stateTemp;
-    cout << "Enter the zip code:  ";
+    if (stateTemp.size() > 2)
+      stateTemp = stateTemp.substr(0,2);
+    cout << "Enter the zip code:  " << endl;
     cin >> zipTemp;
-    cout << "Enter the number of employees:  ";
+    if (zipTemp.size() > 5)
+      zipTemp = zipTemp.substr(0,5);
+    cout << "Enter the number of employees:  " << endl;
     cin >> empTemp;
+    if (empTemp.size() > 7)
+      empTemp = empTemp.substr(0,7);
     //if numberOverflow < 3
     //add record to overflow
     if(numOverflow >= 0 && numOverflow < 4){
         numOverflow ++;
         ofstream myFile;
         myFile.open(overflow, fstream::app);
-        myFile << nameTemp << ", " << rankTemp << ", " << cityTemp << ", " << stateTemp << ", " << zipTemp << ", " << empTemp << endl;
+        myFile << setw(40) << nameTemp << "," << setw(3) << rankTemp << ","
+               << setw(20) << cityTemp << "," << setw(2) << stateTemp << ","
+               << setw(5) << zipTemp << "," << setw(7) <<  empTemp << "\n";
         myFile.close();
         myFile.open(config);
-        myFile << numRecords << ", " << numOverflow;
+        myFile << numRecords << "," << numOverflow;
     }
     //numberOverflow >= 3
     //merge the data, change numberOverflow to 0, add record to overflow
