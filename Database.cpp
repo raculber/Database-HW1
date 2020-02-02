@@ -30,12 +30,14 @@ void Database::createDatabase() {
   string fileName;
   cout << "Enter the name of a .csv file: ";
   cin >> fileName;
-  config = fileName + ".config.csv";
-  data = fileName + ".data.csv";
-  overflow = fileName + ".overflow.csv";
+  config = fileName + ".config";
+  data = fileName + ".data";
+  overflow = fileName + ".overflow";
   csv = fileName + ".csv";
   ofstream dout;
   ifstream din;
+  dout.open(overflow.c_str(), ios::out);
+  dout.close();
   string name, rank, city, state, zip, employees;
   string substr;
   string junk;
@@ -90,9 +92,9 @@ void Database::openDatabase() {
     cout << "Enter the name of the database you want to open." << endl;
     cin >> dbName;
     csv = dbName + ".csv";
-    config = dbName + ".config.csv";
-    data = dbName + ".data.csv";
-    overflow = dbName + ".overflow.csv";
+    config = dbName + ".config";
+    data = dbName + ".data";
+    overflow = dbName + ".overflow";
     configIn.open(config.c_str(), ios::in);
     dataIn.open(data.c_str(), ios::in);
     overflowIn.open(overflow.c_str(), ios::in);
@@ -542,12 +544,12 @@ void Database::addRecord() {
         overflowFile.open(overflow.c_str(), ofstream::out | ofstream::trunc);
         overflowFile.close();
 
-        sortFile();
+        //sortFile();
     }
     cout << "New record added.\n\n";
 }
 
-void Database::sortFile(){
+/*void Database::sortFile(){
     string name, rank, city, state, zip, emp;
     fstream dataFile, tempSorted, dataCopy;
     dataFile.open(data.c_str());
@@ -598,7 +600,7 @@ void Database::sortFile(){
         tempSorted << minline << "\n";
         myDelete(dataCopyCSV.c_str(), nameMin);
     }
-}
+}*/
 
 //Separate delete function that will physically remove the record instead of setting the value to -1
 void Database::myDelete(string fileName, string value) {
