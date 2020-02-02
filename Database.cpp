@@ -11,7 +11,7 @@
 #include <algorithm>
 
 using namespace std;
-const int RECORD_SIZE = 84;
+const int RECORD_SIZE = 83;
 Database::Database() {
   csv = "";
   config = "";
@@ -549,7 +549,7 @@ void Database::addRecord() {
     cout << "New record added.\n\n";
 }
 
-/*void Database::sortFile(){
+void Database::sortFile(){
     string name, rank, city, state, zip, emp;
     fstream dataFile, tempSorted, dataCopy;
     dataFile.open(data.c_str());
@@ -600,7 +600,7 @@ void Database::addRecord() {
         tempSorted << minline << "\n";
         myDelete(dataCopyCSV.c_str(), nameMin);
     }
-}*/
+}
 
 //Separate delete function that will physically remove the record instead of setting the value to -1
 void Database::myDelete(string fileName, string value) {
