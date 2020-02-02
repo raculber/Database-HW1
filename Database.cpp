@@ -158,7 +158,7 @@ void Database::displayRecord() {
     int loc = searchRecord(din, name, rank, city, state, zip, employees);
     din.close();
     //Check if record was "deleted"
-    if (rank == "-1")
+    if (state == "-1")
       cout << "Error: Record not found" << endl;
     else if (loc != -1) {
       int start;
