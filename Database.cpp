@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <cstring>
 #include <sstream>
+#include <algorithm>
 
 using namespace std;
 const int RECORD_SIZE = 84;
