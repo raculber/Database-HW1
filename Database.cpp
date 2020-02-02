@@ -5,6 +5,8 @@
 #include <string>
 #include <iomanip>
 #include <cstring>
+#include <cstdio>
+#include <cstring>
 
 using namespace std;
 const int RECORD_SIZE = 84;
@@ -17,6 +19,7 @@ Database::Database() {
   numRecords = 0;
   numDeleted = 0;
   open = false;
+    numDeleted = 0;
 }
 Database::~Database() {
 
@@ -25,9 +28,9 @@ void Database::createDatabase() {
   string fileName;
   cout << "Enter the name of a .csv file: ";
   cin >> fileName;
-  config = fileName + ".config";
-  data = fileName + ".data";
-  overflow = fileName + ".overflow";
+  config = fileName + ".config.csv";
+  data = fileName + ".data.csv";
+  overflow = fileName + ".overflow.csv";
   csv = fileName + ".csv";
   ofstream dout;
   ifstream din;
@@ -85,9 +88,9 @@ void Database::openDatabase() {
     cout << "Enter the name of the database you want to open." << endl;
     cin >> dbName;
     csv = dbName + ".csv";
-    config = dbName + ".config";
-    data = dbName + ".data";
-    overflow = dbName + ".overflow";
+    config = dbName + ".config.csv";
+    data = dbName + ".data.csv";
+    overflow = dbName + ".overflow.csv";
     configIn.open(config, ios::in);
     dataIn.open(data, ios::in);
     overflowIn.open(overflow, ios::in);
@@ -419,78 +422,227 @@ void Database::createReport() {
 }
 void Database::addRecord() {
     string nameTemp, cityTemp, stateTemp, rankTemp, zipTemp, empTemp;
-    cout << "Enter the name:  " << endl;
     cin.ignore();
+    cout << "Enter the name:  ";
     getline(cin, nameTemp);
-    if (nameTemp.size() > 40)
-      nameTemp = nameTemp.substr(0,40);
-    cout << "Enter the rank:  " << endl;
-    cin >> rankTemp;
-    if (rankTemp.size() > 3)
-      rankTemp.substr(0,3);
-    cout << "Enter the city:  " << endl;
-    cin.ignore();
+    cout << "Enter the rank:  ";
+    getline(cin, rankTemp);
+    cout << "Enter the city:  ";
     getline(cin, cityTemp);
+    cout << "Enter the state:  ";
+    getline(cin, stateTemp);
+    cout << "Enter the zip code:  ";
+    getline(cin, zipTemp);
+    cout << "Enter the number of employees:  ";
+    getline(cin, empTemp);
+    if (nameTemp.size() > 40)
+      nameTemp  = nameTemp.substr(0,40);
+    if (rankTemp.size() > 3)
+      rankTemp = rankTemp.substr(0,3);
     if (cityTemp.size() > 20)
       cityTemp = cityTemp.substr(0,20);
-    cout << "Enter the state:  " << endl;
-    cin >> stateTemp;
     if (stateTemp.size() > 2)
       stateTemp = stateTemp.substr(0,2);
-    cout << "Enter the zip code:  " << endl;
-    cin >> zipTemp;
     if (zipTemp.size() > 5)
       zipTemp = zipTemp.substr(0,5);
-    cout << "Enter the number of employees:  " << endl;
-    cin >> empTemp;
     if (empTemp.size() > 7)
       empTemp = empTemp.substr(0,7);
-    //if numberOverflow < 3
-    //add record to overflow
-    if(numOverflow >= 0 && numOverflow < 4){
-        numOverflow ++;
-        ofstream myFile;
-        myFile.open(overflow, fstream::app);
-        myFile << setw(40) << nameTemp << "," << setw(3) << rankTemp << ","
-               << setw(20) << cityTemp << "," << setw(2) << stateTemp << ","
-               << setw(5) << zipTemp << "," << setw(7) <<  empTemp << "\n";
-        myFile.close();
-        myFile.open(config);
-        myFile << numRecords << "," << numOverflow;
-    }
-    //numberOverflow >= 3
-    //merge the data, change numberOverflow to 0, add record to overflow
-    if(numOverflow >= 4) {
-        numRecords += numOverflow;
-        numOverflow = 0;
-        //mergeRecord: insertion sort
+    ofstream myFile;
+    myFile.open(overflow, fstream::app);
+    myFile << setw(40) << nameTemp << ","
+            << setw(3) << rankTemp << ","
+            << setw(20) << cityTemp << ","
+            << setw(2) << stateTemp << ","
+            << setw(5) << zipTemp << ","
+    << setw(7) << empTemp << endl;
+    myFile.close();
+    numOverflow ++;
+    myFile.open(config);
+    myFile << numRecords << "," << numOverflow;
+    myFile.close();
+    
+    if(numOverflow >= 5){
         fstream dataFile, overflowFile;
+        if(numDeleted >= 0){
+            fstream tempFile;
+            dataFile.open(data);
+            tempFile.open("temp.csv", fstream::out);
+            string name, rank, city, state, zip, employees;
+            while(getline(dataFile, name, ',')){
+                if(name.size() > 40)
+                    name = name.substr(0, 40);
+                getline(dataFile, rank, ',');
+                getline(dataFile, city, ',');
+                getline(dataFile, state, ',');
+                getline(dataFile, zip, ',');
+                getline(dataFile, employees, '\n');
+                rank.erase(remove_if(rank.begin(), rank.end(), ::isspace), rank.end());
+                if(rank == "-1") {
+                    //cout << "\n\nrank is equal to -1;\n\n";
+                }
+                else {
+                    if (rank.size() > 3)
+                      rank = rank.substr(0,3);
+                    if (city.size() > 20)
+                      city = city.substr(0,20);
+                    if (state.size() > 2)
+                      state = state.substr(0,2);
+                    if (zip.size() > 5)
+                      zip = zip.substr(0,5);
+                    if (employees.size() > 7)
+                      employees = employees.substr(0,7);
+                    tempFile << setw(40) << name << ","
+                         << setw(3) << rank << ","
+                         << setw(20) << city << ","
+                         << setw(2) << state << ","
+                         << setw(5) << zip << ","
+                    << setw(7) << employees << "\n";
+                }
+            }
+            dataFile.close();
+            char fname[data.size() + 1];
+            strcpy(fname, data.c_str());
+            if(remove(fname) != 0){
+                cout << "\n\n\nI MESSED UP AND I NOW NEED TO GO BACK AND CHECK WHAT'S WRONG" << endl << endl << endl;
+            }
+            else{
+                char tempn[] = "temp.csv";
+                if(rename(tempn, fname) == 0)
+                    cout << "File renaming succeed. " << endl;
+                else {
+                    perror("Error renaming file");
+                    exit(0);
+                }
+            }
+            
+        }
         dataFile.open(data, fstream::app);
         overflowFile.open(overflow);
         string line;
-        while(!overflowFile.eof())
-        {
+        while(!overflowFile.eof()) {
             getline(overflowFile, line, ',');
             if(!overflowFile.eof())
-                dataFile << line << ", ";
+                dataFile << line << ",";
             else
                 dataFile << line;
         }
         dataFile.close();
         overflowFile.close();
+        overflowFile.open(config);
+        numRecords += numOverflow;
+        numOverflow = 0;
+        overflowFile << numRecords << "," << numOverflow;
+        overflowFile.close();
         overflowFile.open(overflow, ofstream::out | ofstream::trunc);
         overflowFile.close();
-        dataFile.open(config);
-        dataFile << numRecords << " " << numOverflow;
-
-        //sort the data file
-
-
-        dataFile.close();
+        
+        sortFile();
     }
-    cout << "NumOverflow:  " << numOverflow << endl;
     cout << "New record added.\n\n";
 }
+
+void Database::sortFile(){
+    string name, rank, city, state, zip, emp;
+    fstream dataFile, tempSorted, dataCopy;
+    dataFile.open(data);
+    tempSorted.open("tempSorted.csv", fstream::out | fstream::app);
+    //make a copy of data
+    dataCopy.open("dataCopy.csv", fstream::out);
+    string line, token, minline;
+    string nameMin = "~";
+    while(!dataFile.eof()){
+        getline(dataFile, line);
+        if(line != "")
+            dataCopy << line << "\n";
+    }
+    dataCopy.close();
+    dataCopy.open("dataCopy.csv");
+    while(!dataCopy.eof()){
+        getline(dataCopy, line);
+        token = line.substr(0, line.find(','));
+        token.erase(remove_if(token.begin(), token.end(), ::isspace), token.end());
+        if(token.compare(nameMin) < 0 && token != ""){
+            cout << "Token: " << token << " is smaller than nameMin: " << nameMin << endl;
+            nameMin = token;
+            minline = line;
+        }
+        cout << "Token: " << token << endl;
+        cout << "NameMin: " << nameMin << endl << endl << endl;
+    }
+    tempSorted << minline << "\n";
+    myDelete("dataCopy.csv", nameMin);
+    
+    for(int i = 1; i < numRecords; i++){
+        nameMin = "~";
+        dataCopy.close();
+        dataCopy.open("dataCopy.csv");
+        while(!dataCopy.eof()){
+            getline(dataCopy, line);
+            token = line.substr(0, line.find(','));
+            token.erase(remove_if(token.begin(), token.end(), ::isspace), token.end());
+            if(token.compare(nameMin) < 0 && token != ""){
+                cout << "Token: " << token << " is smaller than nameMin: " << nameMin << endl;
+                nameMin = token;
+                minline = line;
+            }
+        }
+        cout << "nameMin: " << nameMin << endl;
+        tempSorted << minline << "\n";
+        myDelete("dataCopy.csv", nameMin);
+    }
+}
+
+//Separate delete function that will physically remove the record instead of setting the value to -1
+void Database::myDelete(string fileName, string value) {
+    cout << "myDelete function" << endl;
+    cout << "value of mydelete: " << value << endl << endl << endl;
+    fstream dataFile, tempFile;
+    dataFile.open(fileName);
+    tempFile.open("tempData.csv", fstream::out);
+    string name, rank, city, state, zip, emp;
+    string line;
+    while(!dataFile.eof()){
+        getline(dataFile, name, ',');
+        name.erase(remove_if(name.begin(), name.end(), ::isspace), name.end());
+        getline(dataFile, rank, ',');
+        getline(dataFile, city, ',');
+        getline(dataFile, state, ',');
+        getline(dataFile, zip, ',');
+        getline(dataFile, emp, '\n');
+        if(name != value && name != ""){
+            tempFile << setw(40) << name << ","
+            << setw(3) << rank << ","
+            << setw(20) << city << ","
+            << setw(2) << state << ","
+            << setw(5) << zip << ","
+            << setw(7) << emp << "\n";
+        }
+    }
+    dataFile.close();
+    //remove and rename files
+    dataFile.close();
+    char fname[data.size() + 1];
+    strcpy(fname, fileName.c_str());
+    if(remove(fname) != 0)
+        perror("I hate this assignment");
+    else {
+        char tempn[] = "tempData.csv";
+        if(rename(tempn, fname) == 0)
+            cout << "File renaming part 2 succeed." << endl;
+        else{
+            perror("Error renaming file part 2");
+            exit(0);
+        }
+    }
+    tempFile.close();
+}
+
+
+
+
+
+
+
 void Database::deleteRecord() {
   if (!open)
     cout << "Please open a Database before continuing" << endl;
