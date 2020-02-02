@@ -186,8 +186,8 @@ void Database::displayRecord() {
       int loc;
       string tempName, rank, city, state, zip, employees;
       int i = 0;
+      din.open(overflow.c_str());
       while(i < numOverflow && !foundOverflow) {
-        din.open(overflow.c_str());
         getRecord(din, i, rank, tempName, city, state, zip, employees);
         loc = tempName.find_first_not_of(" ");
         tempName = tempName.substr(loc,40);
