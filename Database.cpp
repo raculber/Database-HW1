@@ -7,6 +7,7 @@
 #include <cstring>
 #include <cstdio>
 #include <cstring>
+#include <sstream>
 
 using namespace std;
 const int RECORD_SIZE = 84;
@@ -37,8 +38,8 @@ void Database::createDatabase() {
   string name, rank, city, state, zip, employees;
   string substr;
   string junk;
-  din.open(csv);
-  dout.open (data);
+  din.open(csv.c_str());
+  dout.open (data.c_str());
   getline(din, junk);
   while (getline(din, name, ',')) {
   //Truncate inputs over max size
@@ -69,7 +70,7 @@ void Database::createDatabase() {
   }
   din.close();
   dout.close();
-  dout.open(config);
+  dout.open(config.c_str());
   dout << numRecords << "," << numOverflow << endl;
   dout << junk;
   dout.close();
@@ -91,10 +92,10 @@ void Database::openDatabase() {
     config = dbName + ".config.csv";
     data = dbName + ".data.csv";
     overflow = dbName + ".overflow.csv";
-    configIn.open(config, ios::in);
-    dataIn.open(data, ios::in);
-    overflowIn.open(overflow, ios::in);
-    csvIn.open(csv, ios::in);
+    configIn.open(config.c_str(), ios::in);
+    dataIn.open(data.c_str(), ios::in);
+    overflowIn.open(overflow.c_str(), ios::in);
+    csvIn.open(csv.c_str(), ios::in);
     if (configIn.fail() || dataIn.fail() || overflowIn.fail() || csvIn.fail()) {
       cout << "Error: Files failed to open" << endl;
       csv = "";
@@ -106,9 +107,11 @@ void Database::openDatabase() {
       string word;
       open = true;
       getline(configIn, word, ',');
-      numRecords = stoi(word);
+      //numRecords = stoi(word.c_str());
+      istringstream(word.c_str()) >> numRecords;
       getline(configIn, word, '\n');
-      numOverflow = stoi(word);
+      //numOverflow = stoi(word.c_str());
+      istringstream(word.c_str()) >> numOverflow;
     }
     configIn.close();
     dataIn.close();
@@ -145,9 +148,9 @@ void Database::displayRecord() {
       name = name.substr(0,40);
     string city, state, rank, zip, employees;
     ifstream din;
-    din.open(data);
+    din.open(data.c_str());
     ifstream configIn;
-    configIn.open(config);
+    configIn.open(config.c_str());
     //Find record
     int loc = searchRecord(din, name, rank, city, state, zip, employees);
     din.close();
@@ -181,7 +184,7 @@ void Database::displayRecord() {
       string tempName, rank, city, state, zip, employees;
       int i = 0;
       while(i < numOverflow && !foundOverflow) {
-        din.open(overflow);
+        din.open(overflow.c_str());
         getRecord(din, i, rank, tempName, city, state, zip, employees);
         loc = tempName.find_first_not_of(" ");
         tempName = tempName.substr(loc,40);
@@ -232,7 +235,7 @@ void Database::updateRecord() {
     string city, state, rank, zip, employees;
     //Find record
     ifstream din;
-    din.open(data);
+    din.open(data.c_str());
     int loc = searchRecord(din, name, rank, city, state, zip, employees);
     if (loc != -1)
     {
@@ -258,7 +261,7 @@ void Database::updateRecord() {
         }
         string newVal;
         ofstream dout;
-        dout.open(data, ios::in);
+        dout.open(data.c_str(), ios::in);
         dout.seekp(loc*RECORD_SIZE, ios::beg);
         if (choice == 1) {
           cout << "Enter the new rank value: " << endl;
@@ -316,7 +319,7 @@ void Database::updateRecord() {
       string tempName, rank, city, state, zip, employees;
       int i = 0;
       din.close();
-      din.open(overflow);
+      din.open(overflow.c_str());
       while(i < numOverflow && !foundOverflow) {
         getRecord(din, i, rank, tempName, city, state, zip, employees);
         loc = tempName.find_first_not_of(" ");
@@ -332,7 +335,7 @@ void Database::updateRecord() {
         cout << "Error: Record not found" << endl;
       }
       else {
-        din.open(overflow);
+        din.open(overflow.c_str());
         string line;
         din.seekg(i*RECORD_SIZE,ios::beg);
         getline(din, line);
@@ -350,7 +353,7 @@ void Database::updateRecord() {
         }
         string newVal;
         ofstream dout;
-        dout.open(overflow, ios::in);
+        dout.open(overflow.c_str(), ios::in);
         dout.seekp(i*RECORD_SIZE, ios::beg);
         if (choice == 1) {
           cout << "Enter the new rank value: " << endl;
@@ -408,9 +411,10 @@ void Database::createReport() {
     cout << "Please open a Database before continuing" << endl;
   else {
     ofstream dout;
-    dout.open("report.txt");
+    string report = "report.txt";
+    dout.open(report.c_str());
     ifstream din;
-    din.open(data);
+    din.open(data.c_str());
     for (int i = 1; i <= 10; i++)
     {
       string line;
@@ -448,7 +452,7 @@ void Database::addRecord() {
     if (empTemp.size() > 7)
       empTemp = empTemp.substr(0,7);
     ofstream myFile;
-    myFile.open(overflow, fstream::app);
+    myFile.open(overflow.c_str(), fstream::app);
     myFile << setw(40) << nameTemp << ","
             << setw(3) << rankTemp << ","
             << setw(20) << cityTemp << ","
@@ -457,16 +461,17 @@ void Database::addRecord() {
     << setw(7) << empTemp << endl;
     myFile.close();
     numOverflow ++;
-    myFile.open(config);
+    myFile.open(config.c_str());
     myFile << numRecords << "," << numOverflow;
     myFile.close();
-    
+
     if(numOverflow >= 5){
         fstream dataFile, overflowFile;
         if(numDeleted >= 0){
             fstream tempFile;
-            dataFile.open(data);
-            tempFile.open("temp.csv", fstream::out);
+            dataFile.open(data.c_str());
+            string tempCSV = "temp.csv";
+            tempFile.open(tempCSV.c_str(), fstream::out);
             string name, rank, city, state, zip, employees;
             while(getline(dataFile, name, ',')){
                 if(name.size() > 40)
@@ -514,10 +519,10 @@ void Database::addRecord() {
                     exit(0);
                 }
             }
-            
+
         }
-        dataFile.open(data, fstream::app);
-        overflowFile.open(overflow);
+        dataFile.open(data.c_str(), fstream::app);
+        overflowFile.open(overflow.c_str());
         string line;
         while(!overflowFile.eof()) {
             getline(overflowFile, line, ',');
@@ -528,14 +533,14 @@ void Database::addRecord() {
         }
         dataFile.close();
         overflowFile.close();
-        overflowFile.open(config);
+        overflowFile.open(config.c_str());
         numRecords += numOverflow;
         numOverflow = 0;
         overflowFile << numRecords << "," << numOverflow;
         overflowFile.close();
-        overflowFile.open(overflow, ofstream::out | ofstream::trunc);
+        overflowFile.open(overflow.c_str(), ofstream::out | ofstream::trunc);
         overflowFile.close();
-        
+
         sortFile();
     }
     cout << "New record added.\n\n";
@@ -544,10 +549,12 @@ void Database::addRecord() {
 void Database::sortFile(){
     string name, rank, city, state, zip, emp;
     fstream dataFile, tempSorted, dataCopy;
-    dataFile.open(data);
-    tempSorted.open("tempSorted.csv", fstream::out | fstream::app);
+    dataFile.open(data.c_str());
+    string tempSortedCSV = "tempSorted.csv";
+    tempSorted.open(tempSortedCSV.c_str(), fstream::out | fstream::app);
     //make a copy of data
-    dataCopy.open("dataCopy.csv", fstream::out);
+    string dataCopyCSV = "dataCopyCSV.csv";
+    dataCopy.open(dataCopyCSV.c_str(), fstream::out);
     string line, token, minline;
     string nameMin = "~";
     while(!dataFile.eof()){
@@ -556,7 +563,7 @@ void Database::sortFile(){
             dataCopy << line << "\n";
     }
     dataCopy.close();
-    dataCopy.open("dataCopy.csv");
+    dataCopy.open(dataCopyCSV.c_str());
     while(!dataCopy.eof()){
         getline(dataCopy, line);
         token = line.substr(0, line.find(','));
@@ -570,12 +577,12 @@ void Database::sortFile(){
         cout << "NameMin: " << nameMin << endl << endl << endl;
     }
     tempSorted << minline << "\n";
-    myDelete("dataCopy.csv", nameMin);
-    
+    myDelete(dataCopyCSV.c_str(), nameMin);
+
     for(int i = 1; i < numRecords; i++){
         nameMin = "~";
         dataCopy.close();
-        dataCopy.open("dataCopy.csv");
+        dataCopy.open(dataCopyCSV.c_str());
         while(!dataCopy.eof()){
             getline(dataCopy, line);
             token = line.substr(0, line.find(','));
@@ -588,7 +595,7 @@ void Database::sortFile(){
         }
         cout << "nameMin: " << nameMin << endl;
         tempSorted << minline << "\n";
-        myDelete("dataCopy.csv", nameMin);
+        myDelete(dataCopyCSV.c_str(), nameMin);
     }
 }
 
@@ -597,8 +604,9 @@ void Database::myDelete(string fileName, string value) {
     cout << "myDelete function" << endl;
     cout << "value of mydelete: " << value << endl << endl << endl;
     fstream dataFile, tempFile;
-    dataFile.open(fileName);
-    tempFile.open("tempData.csv", fstream::out);
+    dataFile.open(fileName.c_str());
+    string tempDataCSV = "tempData.csv";
+    tempFile.open(tempDataCSV.c_str(), fstream::out);
     string name, rank, city, state, zip, emp;
     string line;
     while(!dataFile.eof()){
@@ -653,7 +661,7 @@ void Database::deleteRecord() {
     if (name.size() > 40)
       name = name.substr(0,40);
     ifstream din;
-    din.open(data);
+    din.open(data.c_str());
     string rank, city, state, zip, employees;
     int result = searchRecord(din, name, rank, city, state, zip, employees);
     din.close();
@@ -664,7 +672,7 @@ void Database::deleteRecord() {
         cout << "Error: Record not found" << endl;
       else {
         ofstream dout;
-        dout.open(data, ios::in);
+        dout.open(data.c_str(), ios::in);
         dout.seekp(result*RECORD_SIZE, ios::beg);
         string one = "-1";
         dout << setw(40) << name << "," << setw(3) << one << "," <<
@@ -677,7 +685,7 @@ void Database::deleteRecord() {
     else {
       bool foundOverflow = false;
       int loc;
-      din.open(overflow);
+      din.open(overflow.c_str());
       string tempName, rank, city, state, zip, employees;
       int i = 0;
       while(i < numOverflow && !foundOverflow) {
@@ -696,7 +704,7 @@ void Database::deleteRecord() {
       }
       else {
         ofstream dout;
-        dout.open(overflow, ios::in);
+        dout.open(overflow.c_str(), ios::in);
         dout.seekp(i*RECORD_SIZE, ios::beg);
         string one = "-1";
         dout << setw(40) << name << "," << setw(3) << one << "," <<
@@ -706,7 +714,7 @@ void Database::deleteRecord() {
         numDeleted++;
       }
     }
-    dout.open(config );
+    dout.open(config.c_str());
     dout << numRecords << "," << numOverflow << "," << numDeleted;
     dout.close();
   }
