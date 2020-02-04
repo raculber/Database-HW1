@@ -593,7 +593,7 @@ void Database::sortFile() {
         }
         string tempN = minName;
         minName.erase(remove(minName.begin(), minName.end(), ' '), minName.end());
-        if(minName == "~"){
+        if(minName == "~" && state == "-1"){
             break;
         }
         tempSorted << setw(40) << tempN << ","
