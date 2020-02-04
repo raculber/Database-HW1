@@ -498,9 +498,7 @@ void Database::addRecord() {
                   getline(dataFile, zip, ',');
                   getline(dataFile, employees, '\n');
                   rank.erase(remove_if(rank.begin(), rank.end(), ::isspace), rank.end());
-                  if(rank == "-1") {
-                      //cout << "\n\nrank is equal to -1;\n\n";
-                  }
+                  if(rank == "-1") { }
                   else {
                       if (rank.size() > 3)
                         rank = rank.substr(0,3);
@@ -524,7 +522,8 @@ void Database::addRecord() {
               char fname[data.size() + 1];
               strcpy(fname, data.c_str());
               if(remove(fname) != 0){
-                  cout << "\n\n\nI MESSED UP AND I NOW NEED TO GO BACK AND CHECK WHAT'S WRONG" << endl << endl << endl;
+                  cout << "\n\n\nTHE CODER HAS NO CLUE WHAY'S WRONG SO SHE'S JUST GONNA QUIT" << endl << endl << endl;
+                  exit(0);
               }
               else{
                   char tempn[] = "temp.csv";
