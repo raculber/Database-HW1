@@ -549,9 +549,9 @@ void Database::addRecord() {
           dataFile.close();
           overflowFile.close();
           overflowFile.open(config.c_str());
-          numRecords += numOverflow;
+          numRecords = numRecords - numDeleted + numOverflow;
           numOverflow = 0;
-          overflowFile << numRecords << "," << numOverflow;
+          overflowFile << numRecords << "," << numOverflow << "\n";
           overflowFile << "NAME,RANK,CITY,STATE,ZIP,EMPLOYEES" << endl;
           overflowFile.close();
           overflowFile.open(overflow.c_str(), ofstream::out | ofstream::trunc);
@@ -565,44 +565,46 @@ void Database::addRecord() {
 
 void Database::sortFile() {
     string name, rank, city, state, zip, emp;
+    string minN, minR, minC, minS, minZ, minE;
     string junk;
     fstream dataFile, tempSorted;
     dataFile.open(data.c_str(), fstream::in);
     string tempcsv = "tempSorted.csv";
     tempSorted.open(tempcsv.c_str(), fstream::out | fstream::app);
-    string minName = "~";
     string prevMin = "";
     int a = 0;
 
     while(a < numRecords){
-        minName = "~";
+        minN = "~";
         while(getline(dataFile, name, ',') && name != "") {
             int loc = name.find_first_not_of(" ");
             name = name.substr(loc, 40);
-            //name.erase(remove(name.begin(), name.end(), ' '), name.end());
-            if(name < minName && name > prevMin){
-                minName = name;
-                getline(dataFile, rank, ',');
-                getline(dataFile, city, ',');
-                getline(dataFile, state, ',');
-                getline(dataFile, zip, ',');
-                getline(dataFile, emp, '\n');
+            getline(dataFile, rank, ',');
+            getline(dataFile, city, ',');
+            getline(dataFile, state, ',');
+            getline(dataFile, zip, ',');
+            getline(dataFile, emp, '\n');
+            if(name < minN && name > prevMin && state != "-1"){
+                minN = name;
+                minR = rank;
+                minC = city;
+                minS = state;
+                minZ = zip;
+                minE = emp;
             }
-            else
-                getline(dataFile, junk);
         }
-        string tempN = minName;
-        minName.erase(remove(minName.begin(), minName.end(), ' '), minName.end());
-        if(minName == "~" && state == "-1"){
+        string tempN = minN;
+        minN.erase(remove(minN.begin(), minN.end(), ' '), minN.end());
+        if(minN == "~"){
             break;
         }
         tempSorted << setw(40) << tempN << ","
-            << setw(3) << rank << ","
-            << setw(20) << city << ","
-            << setw(2) << state << ","
-            << setw(5) << zip << ","
-            << setw(7) << emp << "\n";
-        prevMin = minName;
+            << setw(3) << minR << ","
+            << setw(20) << minC << ","
+            << setw(2) << minS << ","
+            << setw(5) << minZ << ","
+            << setw(7) << minE << "\n";
+        prevMin = minN;
         dataFile.close();
         dataFile.open(data.c_str(), fstream::in);
         a++;
