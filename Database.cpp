@@ -202,25 +202,29 @@ void Database::displayRecord() {
         cout << "Error: Record not found" << endl;
       }
       else {
-        //int start;
-        string junk;
-        string line;
-        getline(configIn, junk);
-        //Display name (from config)
-        getline(configIn, line);
-        cout << right << line << endl;
-        //Display value (from data)
-        //Get rid of excess zeros to make prettier
-        loc = name.find_first_not_of(" ");
-        name = name.substr(loc, 40);
-        loc = rank.find_first_not_of(" ");
-        rank = rank.substr(loc, 3);
-        loc = city.find_first_not_of(" ");
-        city = city.substr(loc, 20);
-        loc = employees.find_first_not_of(" ");
-        employees = employees.substr(loc, 7);
-        cout << name << "," << rank << "," << city << "," <<
-        state << "," << zip << "," << employees << endl;
+        if (state == "-1")
+          cout << "Error: Record not found" << endl;
+        else {
+          //int start;
+          string junk;
+          string line;
+          getline(configIn, junk);
+          //Display name (from config)
+          getline(configIn, line);
+          cout << right << line << endl;
+          //Display value (from data)
+          //Get rid of excess zeros to make prettier
+          loc = name.find_first_not_of(" ");
+          name = name.substr(loc, 40);
+          loc = rank.find_first_not_of(" ");
+          rank = rank.substr(loc, 3);
+          loc = city.find_first_not_of(" ");
+          city = city.substr(loc, 20);
+          loc = employees.find_first_not_of(" ");
+          employees = employees.substr(loc, 7);
+          cout << name << "," << rank << "," << city << "," <<
+          state << "," << zip << "," << employees << endl;
+        }
       }
     }
     configIn.close();
@@ -339,73 +343,77 @@ void Database::updateRecord() {
         cout << "Error: Record not found" << endl;
       }
       else {
-        din.open(overflow.c_str());
-        string line;
-        din.seekg(i*RECORD_SIZE,ios::beg);
-        getline(din, line);
-        cout << line << endl;
-        din.close();
-        int choice = 0;
-        while (choice < 1 || choice > 5) {
-          cout << "Enter the field you wish to update: " << endl;
-          cout << "1: Rank" << endl;
-          cout << "2: City" << endl;
-          cout << "3: State" << endl;
-          cout << "4: ZIP" << endl;
-          cout << "5: Employees" << endl;
-          cin >> choice;
-        }
-        string newVal;
-        ofstream dout;
-        dout.open(overflow.c_str(), ios::in);
-        dout.seekp(i*RECORD_SIZE, ios::beg);
-        if (choice == 1) {
-          cout << "Enter the new rank value: " << endl;
-          cin >> newVal;
-          if (newVal.size() > 3)
-            newVal = newVal.substr(0,3);
-          dout << setw(40) << name << "," << setw(3) << newVal << "," <<
-          setw(20) << city << "," << setw(2) << state << "," << setw(5) <<
-          zip << "," << setw(7) << employees << "\n";
-        }
-        else if (choice == 2) {
-          cout << "Enter the new city value: " << endl;
-          cin.ignore();
-          getline(cin, newVal);
-          if (newVal.size() > 20)
-            newVal = newVal.substr(0,20);
-          dout << setw(40) << name << "," << setw(3) << rank << "," <<
-          setw(20) << newVal << "," << setw(2) << state << "," << setw(5) <<
-          zip << "," << setw(7) << employees << "\n";
-        }
-        else if (choice == 3) {
-          cout << "Enter the new state value: " << endl;
-          cin >> newVal;
-          if (newVal.size() > 2)
-            newVal = newVal.substr(0,2);
-          dout << setw(40) << name << "," << setw(3) << rank << "," <<
-          setw(20) << city << "," << setw(2) << newVal << "," << setw(5) <<
-          zip << "," << setw(7) << employees << "\n";
-        }
-        else if (choice == 4) {
-          cout << "Enter the new ZIP value: " << endl;
-          cin >> newVal;
-          if (newVal.size() > 5)
-            newVal = newVal.substr(0,5);
-          dout << setw(40) << name << "," << setw(3) << rank << "," <<
-          setw(20) << city << "," << setw(2) << state << "," << setw(5) <<
-          newVal << "," << setw(7) << employees << "\n";
-        }
+        if (state == "-1")
+          cout << "Error: Record not found" << endl;
         else {
-          cout << "Enter the new employees value: " << endl;
-          cin >> newVal;
-          if (newVal.size() > 7)
-            newVal = newVal.substr(0,7);
-          dout << setw(40) << name << "," << setw(3) << rank << "," <<
-          setw(20) << city << "," << setw(2) << state << "," << setw(5) <<
-          zip << "," << setw(7) << newVal << "\n";
+          din.open(overflow.c_str());
+          string line;
+          din.seekg(i*RECORD_SIZE,ios::beg);
+          getline(din, line);
+          cout << line << endl;
+          din.close();
+          int choice = 0;
+          while (choice < 1 || choice > 5) {
+            cout << "Enter the field you wish to update: " << endl;
+            cout << "1: Rank" << endl;
+            cout << "2: City" << endl;
+            cout << "3: State" << endl;
+            cout << "4: ZIP" << endl;
+            cout << "5: Employees" << endl;
+            cin >> choice;
+          }
+          string newVal;
+          ofstream dout;
+          dout.open(overflow.c_str(), ios::in);
+          dout.seekp(i*RECORD_SIZE, ios::beg);
+          if (choice == 1) {
+            cout << "Enter the new rank value: " << endl;
+            cin >> newVal;
+            if (newVal.size() > 3)
+              newVal = newVal.substr(0,3);
+            dout << setw(40) << name << "," << setw(3) << newVal << "," <<
+            setw(20) << city << "," << setw(2) << state << "," << setw(5) <<
+            zip << "," << setw(7) << employees << "\n";
+          }
+          else if (choice == 2) {
+            cout << "Enter the new city value: " << endl;
+            cin.ignore();
+            getline(cin, newVal);
+            if (newVal.size() > 20)
+              newVal = newVal.substr(0,20);
+            dout << setw(40) << name << "," << setw(3) << rank << "," <<
+            setw(20) << newVal << "," << setw(2) << state << "," << setw(5) <<
+            zip << "," << setw(7) << employees << "\n";
+          }
+          else if (choice == 3) {
+            cout << "Enter the new state value: " << endl;
+            cin >> newVal;
+            if (newVal.size() > 2)
+              newVal = newVal.substr(0,2);
+            dout << setw(40) << name << "," << setw(3) << rank << "," <<
+            setw(20) << city << "," << setw(2) << newVal << "," << setw(5) <<
+            zip << "," << setw(7) << employees << "\n";
+          }
+          else if (choice == 4) {
+            cout << "Enter the new ZIP value: " << endl;
+            cin >> newVal;
+            if (newVal.size() > 5)
+              newVal = newVal.substr(0,5);
+            dout << setw(40) << name << "," << setw(3) << rank << "," <<
+            setw(20) << city << "," << setw(2) << state << "," << setw(5) <<
+            newVal << "," << setw(7) << employees << "\n";
+          }
+          else {
+            cout << "Enter the new employees value: " << endl;
+            cin >> newVal;
+            if (newVal.size() > 7)
+              newVal = newVal.substr(0,7);
+            dout << setw(40) << name << "," << setw(3) << rank << "," <<
+            setw(20) << city << "," << setw(2) << state << "," << setw(5) <<
+            zip << "," << setw(7) << newVal << "\n";
+          }
+          dout.close();
         }
-        dout.close();
       }
     }
   }
@@ -665,20 +673,21 @@ void Database::deleteRecord(string name) {
         cout << "Error: Record not found" << endl;
       }
       else {
-        ofstream dout;
-        dout.open(overflow.c_str(), ios::in);
-        dout.seekp(i*RECORD_SIZE, ios::beg);
-        string one = "-1";
-        dout << setw(40) << name << "," << setw(3) << one << "," <<
-        setw(20) << one << "," << setw(2) << one << "," << setw(5) <<
-        one << "," << setw(7) << one << "\n";
-        dout.close();
-        numDeleted++;
+        if (state == "-1")
+          cout << "Error: Record not found" << endl;
+        else {
+          ofstream dout;
+          dout.open(overflow.c_str(), ios::in);
+          dout.seekp(i*RECORD_SIZE, ios::beg);
+          string one = "-1";
+          dout << setw(40) << name << "," << setw(3) << one << "," <<
+          setw(20) << one << "," << setw(2) << one << "," << setw(5) <<
+          one << "," << setw(7) << one << "\n";
+          dout.close();
+          numDeleted++;
+        }
       }
     }
-    dout.open(config.c_str());
-    dout << numRecords << "," << numOverflow << "," << numDeleted;
-    dout.close();
   }
 }
 int Database::searchRecord(ifstream &din, const string name, string &rank,
