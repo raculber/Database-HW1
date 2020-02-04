@@ -33,7 +33,8 @@ int main() {
     else if (choice == 8) {
         string name;
         cout << "Enter the name of the company record to delete" << endl;
-        cin >> name;
+        cin.ignore();
+        getline(cin, name);
         db.deleteRecord(name);
     }
     else if (choice == 9 && db.isOpen()) {

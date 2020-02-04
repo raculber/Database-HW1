@@ -469,7 +469,8 @@ void Database::addRecord() {
       myFile.close();
       numOverflow ++;
       myFile.open(config.c_str());
-      myFile << numRecords << "," << numOverflow;
+      myFile << numRecords << "," << numOverflow << endl;
+      myFile << "NAME,RANK,CITY,STATE,ZIP,EMPLOYEES" << endl;
       myFile.close();
 
       if(numOverflow >= 5){
@@ -544,6 +545,7 @@ void Database::addRecord() {
           numRecords += numOverflow;
           numOverflow = 0;
           overflowFile << numRecords << "," << numOverflow;
+          overflowFile << "NAME,RANK,CITY,STATE,ZIP,EMPLOYEES" << endl;
           overflowFile.close();
           overflowFile.open(overflow.c_str(), ofstream::out | ofstream::trunc);
           overflowFile.close();
@@ -564,7 +566,7 @@ void Database::sortFile() {
     string minName = "~";
     string prevMin = "";
     int a = 0;
-    
+
     while(a < numRecords){
         minName = "~";
         while(getline(dataFile, name, ',') && name != "") {
@@ -606,8 +608,8 @@ void Database::sortFile() {
             exit(0);
         }
     }
-    
-    
+
+
 }
 
 
