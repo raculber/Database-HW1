@@ -626,10 +626,14 @@ void Database::sortFile() {
 }
 
 
-void Database::deleteRecord(string name) {
+void Database::deleteRecord() {
   if (!open)
     cout << "Please open a Database before continuing" << endl;
   else {
+    string name;
+    cout << "Enter the name of the company record to delete" << endl;
+    cin.ignore();
+    getline(cin, name);
     if (name.size() > 40)
       name = name.substr(0,40);
     ifstream din;

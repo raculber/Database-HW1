@@ -14,8 +14,7 @@ class Database {
         void createReport();
         void addRecord();
         void sortFile();
-        void myDelete(string fileName, string value);
-        void deleteRecord(string name);
+        void deleteRecord();
         int searchRecord(ifstream &din, const string name, string &rank, string &city, string &state, string &zip, string &employees);
         void getRecord(ifstream &din, const int recordNum, string &rank,
         string &name, string &city, string &state, string &zip, string &employees);
