@@ -583,7 +583,6 @@ void Database::sortFile() {
             //name.erase(remove(name.begin(), name.end(), ' '), name.end());
             if(name < minName && name > prevMin){
                 minName = name;
-                cout << "New min name:  " << minName << endl;
                 getline(dataFile, rank, ',');
                 getline(dataFile, city, ',');
                 getline(dataFile, state, ',');
@@ -605,7 +604,6 @@ void Database::sortFile() {
             << setw(5) << zip << ","
             << setw(7) << emp << "\n";
         prevMin = minName;
-        cout << "prevMin: " << prevMin << endl << endl;
         dataFile.close();
         dataFile.open(data.c_str(), fstream::in);
         a++;
@@ -631,9 +629,6 @@ void Database::deleteRecord(string name) {
   if (!open)
     cout << "Please open a Database before continuing" << endl;
   else {
-    //string name;
-    //cout << "Enter the name of the company record to delete" << endl;
-    //cin >> name;
     if (name.size() > 40)
       name = name.substr(0,40);
     ifstream din;
