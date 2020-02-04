@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		B027481923D9295B00496E1C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B027481223D9295A00496E1C /* main.cpp */; };
 		B027481A23D9295B00496E1C /* Database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B027481423D9295A00496E1C /* Database.cpp */; };
-		B027481B23D9295B00496E1C /* Record.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B027481823D9295B00496E1C /* Record.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,8 +30,6 @@
 		B027481423D9295A00496E1C /* Database.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Database.cpp; sourceTree = "<group>"; };
 		B027481523D9295A00496E1C /* Fortune_500_HQ.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Fortune_500_HQ.csv; sourceTree = "<group>"; };
 		B027481623D9295A00496E1C /* main.exe */ = {isa = PBXFileReference; lastKnownFileType = file; path = main.exe; sourceTree = "<group>"; };
-		B027481723D9295B00496E1C /* Record.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Record.h; sourceTree = "<group>"; };
-		B027481823D9295B00496E1C /* Record.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Record.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,8 +52,6 @@
 				B027481523D9295A00496E1C /* Fortune_500_HQ.csv */,
 				B027481223D9295A00496E1C /* main.cpp */,
 				B027481623D9295A00496E1C /* main.exe */,
-				B027481723D9295B00496E1C /* Record.h */,
-				B027481823D9295B00496E1C /* Record.cpp */,
 			);
 			sourceTree = "<group>";
 		};
@@ -126,7 +121,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B027481A23D9295B00496E1C /* Database.cpp in Sources */,
-				B027481B23D9295B00496E1C /* Record.cpp in Sources */,
 				B027481923D9295B00496E1C /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

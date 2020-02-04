@@ -578,8 +578,9 @@ void Database::sortFile() {
     while(a < numRecords){
         minName = "~";
         while(getline(dataFile, name, ',') && name != "") {
-            //str.erase(remove(str.begin(), str.end(), ' '), str.end());
-            name.erase(remove(name.begin(), name.end(), ' '), name.end());
+            int loc = name.find_first_not_of(" ");
+            name = name.substr(loc, 40);
+            //name.erase(remove(name.begin(), name.end(), ' '), name.end());
             if(name < minName && name > prevMin){
                 minName = name;
                 cout << "New min name:  " << minName << endl;
@@ -592,7 +593,12 @@ void Database::sortFile() {
             else
                 getline(dataFile, junk);
         }
-        tempSorted << setw(40) << minName << ","
+        string tempN = minName;
+        minName.erase(remove(minName.begin(), minName.end(), ' '), minName.end());
+        if(minName == "~"){
+            break;
+        }
+        tempSorted << setw(40) << tempN << ","
             << setw(3) << rank << ","
             << setw(20) << city << ","
             << setw(2) << state << ","
