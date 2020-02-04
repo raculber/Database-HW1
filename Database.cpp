@@ -498,7 +498,7 @@ void Database::addRecord() {
                   getline(dataFile, zip, ',');
                   getline(dataFile, employees, '\n');
                   rank.erase(remove_if(rank.begin(), rank.end(), ::isspace), rank.end());
-                  if(rank == " -1") {
+                  if(rank == "-1") {
                       //cout << "\n\nrank is equal to -1;\n\n";
                   }
                   else {
