@@ -566,7 +566,6 @@ void Database::addRecord() {
 void Database::sortFile() {
     string name, rank, city, state, zip, emp;
     string minN, minR, minC, minS, minZ, minE;
-    string junk;
     fstream dataFile, tempSorted;
     dataFile.open(data.c_str(), fstream::in);
     string tempcsv = "tempSorted.csv";
@@ -604,7 +603,7 @@ void Database::sortFile() {
             << setw(2) << minS << ","
             << setw(5) << minZ << ","
             << setw(7) << minE << "\n";
-        prevMin = minN;
+        prevMin = tempN;
         dataFile.close();
         dataFile.open(data.c_str(), fstream::in);
         a++;
@@ -621,8 +620,6 @@ void Database::sortFile() {
             exit(0);
         }
     }
-
-
 }
 
 

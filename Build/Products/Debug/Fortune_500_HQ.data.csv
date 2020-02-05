@@ -1,5 +1,6 @@
                          "TOYS ""R"" US",244,               WAYNE,NJ, 7470, 64000
                                        1,  1,                   1, 1,    1,      1
+                                       2,  2,                   2, 2,    2,      2
                                        3,  3,                   3, 3,    3,      3
                                       3M, 94,           MAPLEWOOD,MN,55144, 91584
                                        4,  4,                   4, 4,    4,      4
@@ -19,6 +20,7 @@
                                     AGCO,370,              DULUTH,GA,30096, 19795
                                      AIG, 55,            NEW YORK,NY,10038, 56400
                 AIR PRODUCTS & CHEMICALS,294,           ALLENTOWN,PA,18195, 18450
+                                  AIRGAS,489,              RADNOR,PA,19087, 17000
                         AK STEEL HOLDING,441,        WEST CHESTER,OH,45069,  8500
                         ALASKA AIR GROUP,438,             SEATTLE,WA,98188, 19112
                          ALBERTSONS COS., 49,               BOISE,ID,83706,274000
@@ -32,6 +34,11 @@
                               AMAZON.COM, 12,             SEATTLE,WA,98109,341400
                                   AMEREN,431,         SAINT LOUIS,MO,63103,  8629
                  AMERICAN AIRLINES GROUP, 67,          FORT WORTH,TX,76155,122300
+                 AMERICAN ELECTRIC POWER,167,            COLUMBUS,OH,43215, 17634
+                        AMERICAN EXPRESS, 86,            NEW YORK,NY,10285, 56400
+         AMERICAN FAMILY INSURANCE GROUP,315,             MADISON,WI,53783, 10471
+                AMERICAN FINANCIAL GROUP,411,          CINCINNATI,OH,45202,  7600
+                          AMERICAN TOWER,449,              BOSTON,MA, 2116,  4507
                     AMERIPRISE FINANCIAL,239,         MINNEAPOLIS,MN,55474, 13195
                        AMERISOURCEBERGEN, 11,        CHESTERBROOK,PA,19087, 18500
                                    AMGEN,123,       THOUSAND OAKS,CA,91320, 19200
@@ -64,6 +71,7 @@
                             BAKER HUGHES,285,             HOUSTON,TX,77019, 33000
                                     BALL,306,          BROOMFIELD,CO,80021, 18450
                    BANK OF AMERICA CORP., 26,           CHARLOTTE,NC,28255,208024
+           BANK OF NEW YORK MELLON CORP.,177,            NEW YORK,NY,10286, 52000
                     BAXTER INTERNATIONAL,281,           DEERFIELD,IL,60015, 48000
                               BB&T CORP.,245,       WINSTON-SALEM,NC,27101, 37500
                         BECTON DICKINSON,225,      FRANKLIN LAKES,NJ, 7417, 50928
@@ -132,6 +140,7 @@
                               CVS HEALTH,  7,          WOONSOCKET,RI, 2895,204000
                              D.R. HORTON,232,          FORT WORTH,TX,76102,  6976
                             DANA HOLDING,447,              MAUMEE,OH,43537, 24900
+                                 DANAHER,144,          WASHINGTON,DC,20037, 62000
                       DARDEN RESTAURANTS,385,             ORLANDO,FL,32837,150942
               DAVITA HEALTHCARE PARTNERS,181,              DENVER,CO,80202, 70300
                               DEAN FOODS,351,              DALLAS,TX,75204, 17000
@@ -147,6 +156,7 @@
                             DISH NETWORK,186,           ENGLEWOOD,CO,80112, 16000
                                   DISNEY, 52,             BURBANK,CA,91521,195000
                           DOLLAR GENERAL,128,      GOODLETTSVILLE,TN,37072,121000
+                             DOLLAR TREE,136,          CHESAPEAKE,VA,23320,116050
                       DOMINION RESOURCES,238,            RICHMOND,VA,23219, 16200
                                    DOVER,392,       DOWNERS GROVE,IL,60515, 29000
                             DOW CHEMICAL, 62,             MIDLAND,MI,48674, 56000
@@ -179,8 +189,10 @@
               FARMERS INSURANCE EXCHANGE,222,         LOS ANGELES,CA,90010, 13309
                                    FEDEX, 58,             MEMPHIS,TN,38120,335767
              FIDELITY NATIONAL FINANCIAL,293,        JACKSONVILLE,FL,32204, 55219
+  FIDELITY NATIONAL INFORMATION SERVICES,301,        JACKSONVILLE,FL,32204, 55000
                      FIFTH THIRD BANCORP,389,          CINCINNATI,OH,45263, 17844
                 FIRST AMERICAN FINANCIAL,464,           SANTA ANA,CA,92707, 19531
+                              FIRST DATA,242,             ATLANTA,GA,30342, 24000
                              FIRSTENERGY,196,               AKRON,OH,44308, 15707
                                   FISERV,471,          BROOKFIELD,WI,53405, 23000
                                    FLUOR,149,              IRVING,TX,75039, 61551
@@ -193,6 +205,9 @@
                                 GAMESTOP,321,           GRAPEVINE,TX,76051, 41750
                                      GAP,178,       SAN FRANCISCO,CA,94105,135000
                         GENERAL DYNAMICS, 90,        FALLS CHURCH,VA,22042, 98800
+                        GENERAL ELECTRIC, 13,           FAIRFIELD,CT, 6828,295000
+                           GENERAL MILLS,165,         MINNEAPOLIS,MN,55426, 39000
+                          GENERAL MOTORS,  8,             DETROIT,MI,48265,225000
                       GENESIS HEALTHCARE,454,      KENNETT SQUARE,PA,19348, 82000
                            GENUINE PARTS,180,             ATLANTA,GA,30339, 40000
                       GENWORTH FINANCIAL,329,            RICHMOND,VA,23230,  3400
@@ -246,6 +261,7 @@
                          JETBLUE AIRWAYS,403,    LONG ISLAND CITY,NY,11101, 15986
                        JOHNSON & JOHNSON, 35,       NEW BRUNSWICK,NJ, 8933,126400
                          JONES FINANCIAL,404,           DES PERES,MO,63131, 43000
+                      JONES LANG LASALLE,391,             CHICAGO,IL,60601, 77300
                                  KELLOGG,216,        BATTLE CREEK,MI,49017, 37369
                           KELLY SERVICES,490,                TROY,MI,48084,  7500
                                  KEYCORP,479,           CLEVELAND,OH,44114, 15700
@@ -256,12 +272,19 @@
                              KRAFT HEINZ,106,             CHICAGO,IL,60601, 41000
                                   KROGER, 18,          CINCINNATI,OH,45202,443000
                                 L BRANDS,220,            COLUMBUS,OH,43230, 59100
+                      L-3 COMMUNICATIONS,273,            NEW YORK,NY,10016, 38000
+             LABORATORY CORP. OF AMERICA,290,          BURLINGTON,NC,27215, 52000
+                            LAM RESEARCH,440,             FREMONT,CA,94538,  7500
+                            LAND O'LAKES,209,         ARDEN HILLS,MN,55126, 10000
+                         LAS VEGAS SANDS,249,           LAS VEGAS,NV,89109, 49000
                                     LEAR,151,          SOUTHFIELD,MI,48033,148400
                          LEIDOS HOLDINGS,381,              RESTON,VA,20190, 32000
                                   LENNAR,260,               MIAMI,FL,33172,  8335
                        LEUCADIA NATIONAL,262,            NEW YORK,NY,10022, 13000
                   LEVEL 3 COMMUNICATIONS,336,          BROOMFIELD,CO,80021, 12600
                      LIBERTY INTERACTIVE,269,           ENGLEWOOD,CO,80112, 21080
+                           LIBERTY MEDIA,491,           ENGLEWOOD,CO,80112,  3626
+          LIBERTY MUTUAL INSURANCE GROUP, 75,              BOSTON,MA, 2116, 50000
                         LIFEPOINT HEALTH,374,           BRENTWOOD,TN,37027, 47000
                         LINCOLN NATIONAL,207,              RADNOR,PA,19087,  9057
                            LITHIA MOTORS,318,             MEDFORD,OR,97501, 11170
@@ -305,6 +328,9 @@
                                   NETAPP,468,           SUNNYVALE,CA,94089, 12030
                                  NETFLIX,314,           LOS GATOS,CA,95032,  3850
                  NEW YORK LIFE INSURANCE, 65,            NEW YORK,NY,10010, 11320
+                           NEWELL BRANDS,208,             HOBOKEN,NJ, 7030, 53400
+                          NEWMONT MINING,328,   GREENWOOD VILLAGE,CO,80111, 12438
+                              NEWS CORP.,332,            NEW YORK,NY,10036, 24000
                           NEXTERA ENERGY,170,          JUNO BEACH,FL,33408, 14700
                      NGL ENERGY PARTNERS,237,               TULSA,OK,74136,  3200
                                     NIKE, 88,           BEAVERTON,OR,97005, 70700
@@ -326,6 +352,7 @@
                                   ORACLE, 81,        REDWOOD CITY,CA,94065,136000
                                  OSHKOSH,425,             OSHKOSH,WI,54902, 13800
                            OWENS & MINOR,288,      MECHANICSVILLE,VA,23116,  7900
+                           OWENS CORNING,458,              TOLEDO,OH,43659, 16000
                           OWENS-ILLINOIS,401,          PERRYSBURG,OH,43551, 27000
                                   PACCAR,164,            BELLEVUE,WA,98004, 23000
                             PACIFIC LIFE,302,       NEWPORT BEACH,CA,92660,  3628
@@ -373,6 +400,7 @@
                                 RITE AID, 91,           CAMP HILL,PA,17011, 70580
                ROBERT HALF INTERNATIONAL,493,          MENLO PARK,CA,94025, 16400
                      ROCKWELL AUTOMATION,442,           MILWAUKEE,WI,53204, 22000
+                        ROCKWELL COLLINS,492,        CEDAR RAPIDS,IA,52498, 19000
                              ROSS STORES,219,              DUBLIN,CA,94568, 78600
                             RYDER SYSTEM,394,               MIAMI,FL,33178, 34500
                               S&P GLOBAL,459,            NEW YORK,NY,10041, 20000
@@ -394,6 +422,7 @@
                                  STAPLES,140,          FRAMINGHAM,MA, 1702, 61503
                                STARBUCKS,131,             SEATTLE,WA,98134,254000
                STATE FARM INSURANCE COS., 33,         BLOOMINGTON,IL,61710, 68234
+                      STATE STREET CORP.,271,              BOSTON,MA, 2111, 33783
                           STEEL DYNAMICS,347,          FORT WAYNE,IN,46804,  7695
                                  STRYKER,252,           KALAMAZOO,MI,49002, 33000
                           SUNTRUST BANKS,303,             ATLANTA,GA,30308, 24375
@@ -427,12 +456,17 @@
                                      UGI,457,     KING OF PRUSSIA,PA,19406, 13105
                            UNION PACIFIC,143,               OMAHA,NE,68179, 42919
              UNITED CONTINENTAL HOLDINGS, 83,             CHICAGO,IL,60606, 88000
+                    UNITED NATURAL FOODS,325,          PROVIDENCE,RI, 2908,  9554
+                          UNITED RENTALS,452,            STAMFORD,CT, 6902, 12500
+                     UNITED STATES STEEL,279,          PITTSBURGH,PA,15219, 29800
+                     UNITED TECHNOLOGIES, 50,          FARMINGTON,CT, 6032,201600
                       UNITEDHEALTH GROUP,  6,          MINNETONKA,MN,55343,230000
                                   UNIVAR,338,       DOWNERS GROVE,IL,60515,  8700
                UNIVERSAL HEALTH SERVICES,276,     KING OF PRUSSIA,PA,19406, 70863
                               UNUM GROUP,258,         CHATTANOOGA,TN,37402,  9400
                                      UPS, 46,             ATLANTA,GA,30328,335520
                         US FOODS HOLDING,124,            ROSEMONT,IL,60018, 25000
+                                    USAA,102,         SAN ANTONIO,TX,78288, 29943
                            VALERO ENERGY, 37,         SAN ANTONIO,TX,78249,  9996
                                  VERITIV,331,             ATLANTA,GA,30328,  8700
                   VERIZON COMMUNICATIONS, 14,            NEW YORK,NY,10036,160900
@@ -451,6 +485,9 @@
                              WELLS FARGO, 25,       SAN FRANCISCO,CA,94163,269100
                      WESCO INTERNATIONAL,373,          PITTSBURGH,PA,15219,  9000
       WESTERN & SOUTHERN FINANCIAL GROUP,483,          CINCINNATI,OH,45202,  2178
+                         WESTERN DIGITAL,217,              IRVINE,CA,92612, 72878
+                        WESTERN REFINING,349,             EL PASO,TX,79901,  7134
+                           WESTERN UNION,478,           ENGLEWOOD,CO,80112, 10700
                                 WESTROCK,190,            NORCROSS,GA,30071, 39000
                             WEYERHAEUSER,341,             SEATTLE,WA,98104, 10400
                                WHIRLPOOL,137,       BENTON HARBOR,MI,49022, 93000
@@ -464,4 +501,5 @@
                            XPO LOGISTICS,191,           GREENWICH,CT, 6831, 87000
                                    YAHOO,498,           SUNNYVALE,CA,94089,  8500
                               YUM BRANDS,422,          LOUISVILLE,KY,40213, 90000
+                      YUM CHINA HOLDINGS,399,               PLANO,TX,75024,420000
                   ZIMMER BIOMET HOLDINGS,352,              WARSAW,IN,46580,  18500
